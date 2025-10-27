@@ -204,7 +204,7 @@ Like in the Transformer Paper, I concatenated the Wq, Wk and Wv matrices in a si
 
 ## 6. Counting model parameters
 
-I used the **print_trainable_vars.py** script to print the trainable variables of my model and count parameters. The output of the script for the smallest model size is in file **trainable_vars.txt**.
+I used the **print_trainable_vars.py** script to print the trainable variables of my model and count parameters. The output of the script for the smallest model size is in file **train_vars.txt**.
 
 Running the script for all the model sizes in the GPT-2 paper gives the following results.
 
@@ -224,17 +224,22 @@ Therefore, I used the names 124M and 355M for the first two models instead of Op
 
 ### Hugging Face's GPT-2 model
 
-There are different ways to get OpenAI's weights for GPT-2 models. I used the **transformers** package developed by Hugging Face (HF).
+There are different ways of getting OpenAI's pretrained weights for GPT-2 models. I used the **transformers** package developed by Hugging Face (HF).
 
-To be able to load the pretrained weights from HF's model, the trainable variables in my model must align with the trainable variables in HF's model, meaning that hierarchies and shapes must be aligned.
+To be able to load the pretrained weights from HF's GPT-2 models, the trainable variables in my model must align with the trainable variables in HF's model, meaning that class hierarchies and variable shapes must be aligned.
 
-I used the **print_train_variables.py** to print the training variables of HF's model. The output is in file **hf_train_vars.txt**. Names are different but hierarchy and shapes are the same in both model. I strictly followed the model architecture described in the research papers, and HF obviously did the same.
+I used function **all_hf_model_sizes_summary()** in file **utils.py** to print the training variables of HF's models. The output for the smallest model is in file **hf_train_vars.txt**. Names are different but class hierarchies and variable shapes are the same in both models. I strictly followed the model architecture described in the research papers, and HF obviously did the same.
 
-There is one difference, though. The bias variables of dense layers in HF's model have shape (1, N) while in my model they have shape (N,), which is the shape assigned by Keras. Biases have to be broadcasted, like for example for the output projection matrix in the attention head that needs to be broadcasted from (d_layer,) to (seq_len, d_layer). Using (1, d_layer) like in HF's model has the advantage of making the broadcasting axis explicit. However, it requires a custom model.
+There is one difference, though. The bias variables of dense layers in HF's model have shape (1, N) while in my model they have shape (N,), which is the shape used by Keras. Biases have to be broadcasted, like for example for the output projection matrix in the attention head that needs to be broadcasted from (d_layer,) to (seq_len, d_layer). Using (1, d_layer) like in HF's model has the advantage of making the broadcasting axis explicit. However, it is more complex as it requires a custom model.
 
-For the sake of simplicity, given that Keras automatically handles broadcasting, I stuck with standard Keras layers with bias of shape (N,).
+For the sake of simplicity, given that Keras automatically handles broadcasting, I stuck with standard Keras layers.
+
 
 ## 5. Loading pretrained weights
+
+As class hierarchies and variable shapes are aligned, loading the pretrained weights from HF's model is trivial. There is no need for a name or shape mapping mechanism. The only thing that needs to be taken care of is to reshape the bias variables in HF's model from (1, N) to (N,).
+
+See function **get_gpt2_model()** in file **utils.py** that creates a GPT-2 model and optionally loads the pretrained weights from the corresponding HF model.
 
 ## 6. Attention mask
 
