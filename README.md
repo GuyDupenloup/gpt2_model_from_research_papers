@@ -87,9 +87,10 @@ In section '2.3 Model' of the GPT-2 Paper:
 
 In Section '5.4 Regularization' of the Transformer Paper:
 
-    "We apply dropout to the output of each sub-layer, before it is added to the sub-layer input 
-    and normalized. In addition, we apply dropout to the sums of the embeddings and the positional
-    encodings in both the encoder and decoder stacks. For the base model, we use a rate of P_drop=0.1."
+    "We apply dropout to the output of each sub-layer, before it is added to the sub-layer 
+    input and normalized. In addition, we apply dropout to the sums of the embeddings and 
+    the positional encodings in both the encoder and decoder stacks. For the base model,
+    we use a rate of P_drop=0.1."
 
 Since dropout layers are not mentioned in the GPT or GPT-2 papers, we assume they follow the same configuration as in the Transformer Paper.
 
@@ -106,8 +107,8 @@ Using the information above, it is now possible to complete the diagram of the G
 
 The vocabulary size and context length are given in section '2.3 Model' of the GPT-2 Paper:
 
-    "The vocabulary is expanded to 50,257. We also increase the context size from 512 to 1024 tokens
-    and a larger batch size of 512 is used."
+    "The vocabulary is expanded to 50,257. We also increase the context size from 512 
+    to 1024 tokens and a larger batch size of 512 is used."
 
 
 ### GPT-2 model sizes
@@ -180,12 +181,13 @@ The ReLU activation function of the original transformer was replaced by a GELU 
 
 The Transformer Paper describes the model output linear layer in section '3.4: Embeddings and Softmax':
 
-    "Similarly to other sequence transduction models, we use learned embeddings to convert 
-    the input tokens and output tokens to vectors of dimension d_model. We also use the usual 
-    learned linear transformation and softmax function to convert the decoder output to predicted
-    next-token probabilities. In our model, we share the same weight matrix between the two embedding 
-    layers and the pre-softmax linear transformation, similar to [30]. In the embedding layers, 
-    we multiply those weights by sqrt(d_model)."
+    "Similarly to other sequence transduction models, we use learned embeddings 
+    to convert the input tokens and output tokens to vectors of dimension d_model.
+    We also use the usual learned linear transformation and softmax function 
+    to convert the decoder output to predicted next-token probabilities. In our model,
+    we share the same weight matrix between the two embedding layers and the pre-softmax 
+    linear transformation, similar to [30]. In the embedding layers, we multiply those 
+    weights by sqrt(d_model)."
 
 The GPT Paper describes the same linear layer in section '3.2 Supervised fine-tuning'. The GPT-2 paper does not mention it, so we assume that it is the same as in the Transformer and GPT Papers.
 
