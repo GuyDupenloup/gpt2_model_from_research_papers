@@ -30,11 +30,13 @@ The main goal of this project was to construct the model using **ONLY** these th
 
 In the section entitled 'Model Specifications' of the GPT Paper, the authors state:
 
-    "Our model largely follows the original transformer work. We trained a 12-layer decoder-only transformer with masked self-attention heads (768 dimensional states and 12 attention heads).
+    "Our model largely follows the original transformer work. We trained a 12-layer decoder-only
+    transformer with masked self-attention heads (768 dimensional states and 12 attention heads).
 
 And in section '2.3 Model' of the GPT-2 Paper:
 
-    "We use a Transformer (Vaswani et al., 2017) based architecture for our LMs. The model largely follows the details of the OpenAI GPT model (Radford et al., 2018) with a few modifications."
+    "We use a Transformer (Vaswani et al., 2017) based architecture for our LMs. The model largely
+    follows the details of the OpenAI GPT model (Radford et al., 2018) with a few modifications."
 
 Therefore, I used the following method to look for information:
 
@@ -85,9 +87,9 @@ In section '2.3 Model' of the GPT-2 Paper:
 
 In Section '5.4 Regularization' of the Transformer Paper:
 
-    "We apply dropout to the output of each sub-layer, before it is added to the sub-layer input and
-    normalized. In addition, we apply dropout to the sums of the embeddings and the positional encodings
-    in both the encoder and decoder stacks. For the base model, we use a rate of P_drop=0.1."
+    "We apply dropout to the output of each sub-layer, before it is added to the sub-layer input 
+    and normalized. In addition, we apply dropout to the sums of the embeddings and the positional
+    encodings in both the encoder and decoder stacks. For the base model, we use a rate of P_drop=0.1."
 
 Since dropout layers are not mentioned in the GPT or GPT-2 papers, we assume they follow the same configuration as in the Transformer Paper.
 
@@ -154,16 +156,16 @@ In section '3.3 Position-wise Feed-Forward Networks' of the Transformer Paper:
 
 Further in the same section:
 
-    "The dimensionality of input and output is d_model = 512, and the inner-layer has dimensionality
-    dff = 2048."
+    "The dimensionality of input and output is d_model = 512, and the inner-layer 
+    has dimensionality dff = 2048."
 
 Therefore, the feed-forward network of the original transformer has 2 layers, and the size of the inner layer is 4x the size of the output layer.
 
 In section 'Model specifications' of the GPT Paper:
 
-    "We trained a 12-layer decoder-only transformer with masked self-attention heads (768 dimensional
-    states and 12 attention heads). For the position-wise feed-forward networks, we used 3072 dimensional 
-    inner states."
+    "We trained a 12-layer decoder-only transformer with masked self-attention heads 
+    (768 dimensional states and 12 attention heads). For the position-wise feed-forward 
+    networks, we used 3072 dimensional inner states."
 
 As in the original transformer, the inner layer's size is 4x the size of the output layer. As there is no mention of it in the GPT-2 Paper, we assume that this 4x ratio is valid for all the GPT-2 model sizes.
 
@@ -178,10 +180,12 @@ The ReLU activation function of the original transformer was replaced by a GELU 
 
 The Transformer Paper describes the model output linear layer in section '3.4: Embeddings and Softmax':
 
-    "Similarly to other sequence transduction models, we use learned embeddings to convert the input tokens
-    and output tokens to vectors of dimension d_model. We also use the usual learned linear transformation
-    and softmax function to convert the decoder output to predicted next-token probabilities. In our model,
-    we share the same weight matrix between the two embedding layers and the pre-softmax linear transformation, similar to [30]. In the embedding layers, we multiply those weights by sqrt(d_model)."
+    "Similarly to other sequence transduction models, we use learned embeddings to convert 
+    the input tokens and output tokens to vectors of dimension d_model. We also use the usual 
+    learned linear transformation and softmax function to convert the decoder output to predicted
+    next-token probabilities. In our model, we share the same weight matrix between the two embedding 
+    layers and the pre-softmax linear transformation, similar to [30]. In the embedding layers, 
+    we multiply those weights by sqrt(d_model)."
 
 The GPT Paper describes the same linear layer in section '3.2 Supervised fine-tuning'. The GPT-2 paper does not mention it, so we assume that it is the same as in the Transformer and GPT Papers.
 
@@ -272,9 +276,9 @@ There is one difference, though. The bias variables of dense layers in HF's mode
 
 For the sake of simplicity, given that Keras automatically handles broadcasting, I stuck with standard Keras layers. When transferring the weights, I just had to reshape the variables with shape (1, N) in HF's model to shape (N,).
 
-The weight transfer code is illustrated below.
+The weight transfer procedure is illustrated below.
 
-````bash
+```bash
 
 # Get the pretrained weights from HF's model
 weights = hf_model.get_weights()
