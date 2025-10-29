@@ -1,6 +1,8 @@
 
+from tabulate import tabulate
 import numpy as np
 import tensorflow as tf
+
 from transformers import TFGPT2LMHeadModel
 from gpt2_model import GPT2Model
 
@@ -30,7 +32,7 @@ def load_pretrained_weights_(model, model_size):
     for i in range(len(weights)):
         ws = np.shape(weights[i])
         if len(ws) == 2 and ws[0] == 1:
-            weights[i] = np.reshape(weights[i], (ws[1],) )
+            weights[i] = np.squeeze(weights[i])
 
     model.set_weights(weights)
 
@@ -64,15 +66,19 @@ def get_gpt2_model(model_size, pretrained=False):
 
 def model_summary(model, name):
 
-    print(f'\n========== Trainable variables in model {name} ==========\n')
+    print(f'\n====== Trainable variables in model {name} ======n')
+
+    headers = ['Variable', 'Shape', '#Params']
+    data = []
     total_params = 0
 
     for var in model.trainable_variables:
-        num_params = np.prod(var.shape)
+        num_params = int(np.prod(var.shape))
         total_params += num_params
-        print(f'{var.name}:   {var.shape} = {num_params}')
+        data.append([var.name, var.shape, f'{num_params:,.0f}'])
 
-    print(f'\nTotal trainable parameters: {total_params}')
+    print(tabulate(data, headers=headers, tablefmt='pipe', colalign=('left', 'center', 'right')))
+    print(f'\nTotal trainable parameters: {total_params:,.0f}')
 
 
 def all_models_summary():
@@ -109,5 +115,7 @@ def all_hf_models_summary():
         _ = model(dummy_input)
      
         model_summary(model, name) 
+
+        exit()
 
 all_models_summary()
