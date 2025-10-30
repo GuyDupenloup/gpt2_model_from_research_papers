@@ -92,14 +92,15 @@ In the original Transformer paper, the term 'layer' refers to a transformer bloc
 
 In the 'Model Specifications' section of the GPT paper:
 
-    "We used learned position embeddings instead of the sinusoidal version proposed in the original work."
+    "We used learned position embeddings instead of the sinusoidal version 
+    proposed in the original work."
 
 The GPT-2 paper makes no mention of embeddings, so I assumed that it also uses position embeddings.
 
 The vocabulary size and context length are given in section '2.3 Model' of the GPT-2 paper:
 
-    "The vocabulary is expanded to 50,257. We also increase the context size from 512 
-    to 1024 tokens and a larger batch size of 512 is used."
+    "The vocabulary is expanded to 50,257. We also increase the context size
+    from 512 to 1024 tokens and a larger batch size of 512 is used."
 
 
 ### Layer normalization
@@ -221,8 +222,9 @@ The model is in file **src/gpt2_model.py**.
 
 I followed the implementation of the Wq, Wk and Wv matrices described in section '3.2.1 Scaled Dot-Product Attention' of the Transformer paper:
 
-    "In practice, we compute the attention function on a set of queries simultaneously, packed together
-    into a matrix Q. The keys and values are also packed together into matrices K and V."
+    "In practice, we compute the attention function on a set of queries simultaneously,
+    packed together into a matrix Q. The keys and values are also packed together 
+    into matrices K and V."
 
 Like in the Transformer paper, I concatenated the Wq, Wk and Wv matrices in a single matrix rather than using 3 distinct matrices. This makes the computation of Q, K and V more efficient (only one matrix product).
 
