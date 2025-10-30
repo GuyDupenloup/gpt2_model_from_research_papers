@@ -5,7 +5,7 @@
 
 This repo contains a Tensorflow implementation of OpenAI's GPT-2 model.
 
-The main goal of this project was to construct the model using **ONLY** these three research papers:
+The main goal of this project was to construct the model using only these three research papers:
 
 - The original transformer paper published in 2017:
 
@@ -19,7 +19,7 @@ The main goal of this project was to construct the model using **ONLY** these th
     ["Improving Language Understanding by Generative Pre-Training"](https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf)
 
 - The GPT-2 paper published by OpenAI in 2019:
-![alt text](image.png)
+
     Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, Ilya Sutskever.
     ["Language Models are Unsupervised Multitask Learners."](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf?utm_source=chatgpt.com)
 
@@ -40,37 +40,37 @@ Therefore, my implementation prioritized information based on the following hier
 
 1. GPT-2 paper (highest priority)
 2. GPT paper
-3. Transformer paper (used for missing foundational details)
+3. Transformer paper
 
 
 ## 3. Source code
 
 The files for this project are in the **/src** directory and are listed in the table below.
 
-| Filename                |  Contents                                                  |
-|-------------------------|------------------------------------------------------------|
-| gpt2_model.py           |  GPT-2 model                                               |
-| gpt2_model_final.py     |  GPT-2 model aligned with Hugging Face model               |
-| utils.py                |  Utilities and shared functions                            |
-| model_summary.txt       |  Summary of the smallest GPT-2 model                       |
-| train_vars.txt          |  Trainable variables in my model and Hugging Face's model  |
-| generate_text.py        |  Trainable variables in my model and Hugging Face's model  |
+| Filename                |  Contents                                                                |
+|-------------------------|--------------------------------------------------------------------------|
+| gpt2_model.py           |  GPT-2 model                                                             |
+| gpt2_model_aligned.py   |  GPT-2 model aligned with Hugging Face model                             |
+| utils.py                |  Utilities and shared functions                                          |
+| model_summary.txt       |  Summary of the smallest GPT-2 model (layer shapes and parameters)       |
+| train_vars.txt          |  Comparison of trainable variables in my model and Hugging Face's model  |
+| generate_text.py        |  Script to generate text with the model                                  |
 
 
 ## 4. GPT-2 decoder-only architecture
 
-The original Transformer paper includes the following diagram of the model architecture (Figure 1):
+The original Transformer paper includes the following diagram of the model architecture:
 
 ![](pictures/transformer_architecture.JPG)
 
-The model comprises an encoder and a decoder that are built with stacks of multi-head self-attention blocks.
+The model comprises an encoder and a decoder that are built with stacks of multi-head attention blocks.
 
-Diagrams of the attention head and multi-head attention block are also provided in the same paper (Figure 2):
+Diagrams of the attention head and multi-head attention block are also provided in the same paper:
 
 ![](pictures/self_attention.JPG)
 
 
-The GPT paper contains the following diagram of the GPT model architecture (Figure 1):
+The GPT paper contains the following diagram of the GPT model architecture:
 
 ![](pictures/GPT_architecture.JPG)
 
@@ -83,7 +83,7 @@ Because it is a decoder-only architecture, the GPT model requires only 2 sub-lay
 - Masked multi-head attention, layer norm
 - Feed-forward network, layer norm.
 
-In the original Transformer paper, the term 'layer' refers to a transformer block (a unit containing attention and feed-forward sub-layers). The model 'hidden size' refers to the size of the embeddings. I use the same terminology.
+In the original Transformer paper, the term 'layer' refers to a transformer block (a unit containing attention and feed-forward sub-layers). The model 'hidden size' refers to the size of the embeddings. I used the same terminology.
 
 
 ## 5. GPT-2 model layers and architecture diagram
@@ -139,7 +139,7 @@ Table 1 in the GPT-2 paper shows four sizes for GPT-2 models:
 | 762M       |   36     |     1280  |
 | 1542M      |   48     |     1600  |
 
-In this table, *n_layers* is the number of transformer blocks and *d_model* is the model hidden size (embeddings size).
+In this table, *n_layers* is the number of transformer blocks and *d_model* is the model hidden size (size of the embeddings).
 
 The table does not provide the size of the head output and the number of heads in parallel in the multi-head attention block. However, in section '3.2.2 Multi-Head Attention' of the Transformer paper, the authors specify:
 
@@ -148,11 +148,11 @@ The table does not provide the size of the head output and the number of heads i
 
 d_k = d_v is the size of the Key and Value matrices (although not mentioned, d_q is the same size).
 
-Thus, the Transformer paper states that the head output size *d_head* is equal to 64, and that *d_head* and *d_model* are linked by following relationship:
+Thus, the Transformer paper states that the head output size *d_head* is equal to 64, and that *d_head* and *d_model* are linked by the following relationship:
 
         n_heads = d_model / 64
 
-The GPT and GPT-2 papers don't mention any change in the value of *d_head* or the relationship between *d_head* and *d_model*, so we assume they are the same across all GPT-2 model sizes.
+The GPT and GPT-2 papers don't mention any change in the value of *d_head* or the relationship between *d_head* and *d_model*, so I assumed that they are the same across all GPT-2 model sizes.
 
 We can now add the number of heads *n_heads* to the table.
 
@@ -185,7 +185,7 @@ In section 'Model specifications' of the GPT paper:
     (768 dimensional states and 12 attention heads). For the position-wise feed-forward 
     networks, we used 3072 dimensional inner states."
 
-As in the original transformer, the inner layer's size is 4x the size of the output layer. As there is no mention of it in the GPT-2 paper, we assume that this 4x ratio is valid for all the GPT-2 model sizes.
+As in the original transformer, the inner layer's size is 4x the size of the output layer. As there is no mention of it in the GPT-2 paper, I assumed that this 4x ratio is valid for all the GPT-2 model sizes.
 
 Also mentioned in the same section of the GPT paper:
 
@@ -208,12 +208,12 @@ The Transformer paper describes the model output linear layer in section '3.4: E
 
 The GPT paper describes the same linear layer in section '3.2 Supervised fine-tuning'. The GPT-2 paper does not mention it, so I assumed that it is the same as in the Transformer and GPT papers.
 
-From this, we can infer that the output linear layer projects the final decoder representations to the vocabulary size, followed by a softmax function to produce next-token probabilities. The weights of the projection matrix Wy are shared with the embedding matrix E. The input embedding layer maps tokens to embeddings while the output linear transformation maps embeddings back to tokens, so Wy is the transpose of E.
+The output linear layer projects the final decoder representations to the vocabulary size, followed by a softmax function to produce next-token probabilities. The weights of the projection matrix Wy are shared with the embedding matrix E. The input embedding layer maps tokens to embeddings while the output linear transformation maps embeddings back to tokens, so Wy is the transpose of E.
 
 Although not mentioned in any of the three papers, the weights shared between E and Wy are the token embedding weights. Positional embeddings are not part of the token-to-vocabulary mapping, so they are not shared with the output projection.
 
 
-## 6. Model implementation
+## 9. Model implementation
 
 Using the research papers and the findings above, implementing the model in Tensorflow was straightforward.
 
@@ -227,7 +227,7 @@ I followed the implementation of the Wq, Wk and Wv matrices described in section
 Like in the Transformer paper, I concatenated the Wq, Wk and Wv matrices in a single matrix rather than using 3 distinct matrices. This makes the computation of Q, K and V more efficient (only one matrix product).
 
 
-## 7. Model parameter counts
+## 10. Model parameter counts
 
 I used the **all_model_sizes_summary()** function in file **utils.py** to count the number of trainable parameters for each model size. The output of the function for the smallest model size is in file **model_summary.txt**.
 
@@ -240,48 +240,46 @@ Running the script for all the model sizes in the GPT-2 paper gave the following
 | 762M          |   774M      |
 | 1542M         |  1542M      |
 
-The first two model sizes are different from the numbers given in the GPT-2 paper. See section x for an explanation.
+The first two model sizes are different from the numbers given in the GPT-2 paper.
+
+Here I had to do some research as I could not find any explanation for these differences. I found out from different sources that OpenAI's numbers actually are inaccurate. Mine are correct.
 
 
-## 8. Getting OpenAI's pretrained weights
+## 11. Loading OpenAI's pretrained weights
 
-I used the **transformers** package developed by Hugging Face to obtain OpenAI's weights for GPT-2 models.
+OpenAI's weights for GPT-2 models can be obtained from multiple sources. I used the **transformers** package developed by Hugging Face.
 
-Keras stores the trainable variables of a model in its **trainable_variables** attribute, which is a list. The simplest approach to transfer the weights is to ensure a one-to-one correspondence between the elements of the **trainable_variables** lists of both models. Then, a loop through the lists of variables is sufficient to transfer the weights.
+Keras stores the list of trainable variables of a model in its **trainable_variables** attribute. The simplest approach to transfer the weights from a source model to a target model is to ensure that the elements of their lists of variables match one-to-one. Then, a simple loop through the variable lists is sufficient to read the weights from the source model and write them to the target model.
 
 There are two conditions to make this possible:
+1. Both models must share the same decomposition in layers and sub-layers.
+2. Layers must be declared in the same order in both **__init()__** methods.
 
-1. **Layer structure**: Layers must match one-to-one. For example, if there is a feed-forward network (FFN) layer in the Hugging Face model, there must also be an FFN layer in my model.
-
-2. **Declaration order**: Layers must be declared in the same order in both **__init()__** methods.
-
-The two lists of variables matched right away, with no change required to my model. This is not due to luck. I strictly followed the model architecture described in the research papers, and Hugging Face clearly did the same.
+The variables of my model matched those of the Hugging Face model right away, with no change required to my model. I strictly followed the model architecture described in the research papers, and Hugging Face clearly did the same.
 
 I used the **compare_train_vars()** function in file **utils.py** to print and compare the trainable variables of both models. The output of the function for the smallest model size is in file **train_vars.txt**. It shows that the variables match one-to-one (although they have different names).
 
-There is one difference, though. The bias variables of dense layers in the Hugging Face model have shape (1, N) while in my model they have shape (N,), which is the shape Keras assigns to them. Biases have to be broadcasted, like for example the bias of the output projection matrix in the attention head that has to be broadcasted from (d_layer,) to (seq_len, d_layer). Using (1, d_layer) has the advantage of making the broadcasting axis explicit. However, it is more complex as it requires a custom layer.
+There is one difference, though. Bias variables in the Hugging Face model have shape (1, N) while in my model they have shape (N,), which is the shape Keras gives them. Biases have to be broadcasted, and using the (1, N) shape has the advantage of making the broadcasting axis explicit. However, it is more complex as it requires custom layers.
 
-For the sake of simplicity, given that Keras automatically handles broadcasting, I stuck with standard Keras layers. When transferring the weights, I just had to reshape the variables with shape (1, N) in the Hugging Face model to shape (N,).
+For the sake of simplicity, given that Keras automatically handles broadcasting, I stuck with the standard layers. When transferring the weights, I just had to reshape the bias layers in the Hugging Face model from (1, N) to (N,).
 
 
-## 9. Final Model aligned with OpenAI's model
+## 12. Aligning with OpenAI's model
 
 After completing my model, I verified its alignment with OpenAI’s implementation and the Hugging Face reference model.
 
-I found four differences:
+I found three differences:
 
-1. **Parameter counts**: The number of parameters for the first two model sizes that OpenAI published in the GPT-2 paper are 117M and 345M, but I got 124M and 355M with my model. I found out from different sources that OpenAI's numbers are actually inaccurate. Mine are the correct numbers. To avoid any confusion, I used the same model size names as Hugging Face: 'gpt2', 'gpt2-medium', 'gpt2-large', and 'gpt2-xl'.
+1. **Token embeddings scaling**: In OpenAI's GPT-2 model, the token embeddings are not scaled by sqrt(d_model) like in the original transformer. This was not mentioned anywhere in the GPT or GPT-2 paper.
 
-2. **Token embeddings scaling**: In OpenAI's GPT-2 model, the token embeddings are not scaled by sqrt(d_model) like in the original transformer. This was not mentioned anywhere in the GPT or GPT-2 paper.
+2. **Model output**: I used a softmax to output next-token probabilities as described in the Transformer paper. The Hugging Face model outputs logits.
 
-3. **Model output**: I used a softmax to output probabilities as described in the Transformer paper. The Hugging Face model does not have a softmax, it outputs logits.
+3. **Attention mask**: The Hugging Face model includes an optional attention mask that can be used to avoid that the model attends to padding tokens. It is unclear if the original transformer, GPT or GPT-2 models had it.
 
-4. **Attention mask**: The Hugging Face model includes an optional attention mask that can be used to avoid that the model attends to padding tokens. It is unclear if the original transformer, GPT or GPT-2 models had it.
-
-To align my model, I removed the token embeddings scaling and the softmax. I also added an optional attention mask. The final model is in file **gpt2_final_model.py**.
+To align my model with the Huggin Face model, I removed the token embeddings scaling and the softmax. I also added an optional attention mask. The updated model is in file **gpt2_model_aligned.py**.
 
 
-## 10. Generating text with the final model
+## 13. Generating text with the final model
 
 File **generate_text.py** contains functions to generate text, one token at a time.
 
