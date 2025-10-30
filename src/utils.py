@@ -18,7 +18,7 @@ MODEL_CONFIGS = {
 }
 
 
-def load_pretrained_weights_(model, model_size):
+def transfer_pretrained_weights(model, model_size):
 
     print(f'>>> Loading pretrained weights')
 
@@ -29,9 +29,13 @@ def load_pretrained_weights_(model, model_size):
     # Get the pretrained weights
     weights = hf_model.get_weights()
 
+    # Convert shapes (1, N) to (N,)
+    vars = model.pretrained_variables
+
     for i in range(len(weights)):
+        var_name = vars[i].name
         ws = np.shape(weights[i])
-        if len(ws) == 2 and ws[0] == 1:
+        if var_name[-6:] == 'bias:0' and len(ws) == 2 and ws[0] == 1:
             weights[i] = np.squeeze(weights[i])
 
     model.set_weights(weights)
@@ -42,9 +46,9 @@ def get_gpt2_model(model_size, pretrained=False):
     if model_size not in MODEL_CONFIGS:
         raise ValueError(f'Valid model sizes are {list(MODEL_CONFIGS.keys())}. Received {model_size}')
 
+    print(f'>>> Creating {model_size} model')
     params = MODEL_CONFIGS[model_size]
 
-    print(f'>>> Creating {model_size} model')
     model = GPT2Model(
         vocab_size=VOCAB_SIZE,
         seq_len=CONTEXT_LEN,
@@ -54,12 +58,12 @@ def get_gpt2_model(model_size, pretrained=False):
         name=model_size
     )
 
-    # Use dummy data to build the model
+    # Build the model
     dummy_input = tf.random.uniform((1, CONTEXT_LEN), minval=0, maxval=VOCAB_SIZE, dtype=tf.int32)
     _ = model(dummy_input)
 
     if pretrained:
-        load_pretrained_weights_(model, model_size)
+        transfer_pretrained_weights(model, model_size)
 
     return model
 
@@ -81,7 +85,7 @@ def model_summary(model, name):
     print(f'\nTotal trainable parameters: {total_params:,.0f}')
 
 
-def all_models_summary():
+def all_model_sizes_summary():
 
     for name, params in MODEL_CONFIGS.items():
 
@@ -94,28 +98,40 @@ def all_models_summary():
             n_layers=params['n_layers']
         )
           
-        # Use dummy data to build the model
+        # Build the model
         dummy_input = tf.random.uniform((1, CONTEXT_LEN), minval=0, maxval=VOCAB_SIZE, dtype=tf.int32)
         _ = model(dummy_input)
 
         model_summary(model, name)
 
-        exit()
 
+def compare_train_vars():
 
-def all_hf_models_summary():
+    # Get the smallest model and build it
+    params = MODEL_CONFIGS['124M']
+    model = GPT2Model(
+        vocab_size=VOCAB_SIZE,
+        seq_len=CONTEXT_LEN,
+        d_model=params['d_model'],
+        n_heads=params['n_heads'],
+        n_layers=params['n_layers']
+    )
+    dummy_input = tf.random.uniform((1, CONTEXT_LEN), minval=0, maxval=VOCAB_SIZE, dtype=tf.int32)
+    _ = model(dummy_input)
 
-    for name in ('gpt2', 'gpt2-medium', 'gpt2-large', 'gpt2-xl'):
+    # Get the smallest Hugging Face model and build it
+    hf_model = TFGPT2LMHeadModel.from_pretrained('gpt2', from_pt=True)
+    _ = hf_model(dummy_input)
+    
+    print("\n======= Trainable variables compared (Hugging Face's model variables are in second position) =======\n")
 
-        print(f'>>> Creating model {name}')
-        model = TFGPT2LMHeadModel.from_pretrained(name, from_pt=True)
+    vars = model.trainable_variables
+    hf_vars = hf_model.trainable_variables
+    if len(vars) != len(hf_vars):
+        raise ValueError(f"The models don't have the same number of trainable variables ({len(vars)} vs. {len(hf_vars)})")
 
-        # Use dummy data to build the model
-        dummy_input = tf.random.uniform((1, CONTEXT_LEN), minval=0, maxval=VOCAB_SIZE, dtype=tf.int32)
-        _ = model(dummy_input)
-     
-        model_summary(model, name) 
-
-        exit()
-
-all_models_summary()
+    for i in range(len(model.trainable_variables)):
+        print(f'i = {i}')
+        print(f'{vars[i].name}    {vars[i].shape}')
+        print(f'{hf_vars[i].name}    {hf_vars[i].shape}')
+        print()
