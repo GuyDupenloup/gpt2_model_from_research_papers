@@ -231,7 +231,7 @@ Like in the Transformer paper, I concatenated the Wq, Wk and Wv matrices in a si
 
 ## 10. Model parameter counts
 
-I used the **all_model_sizes_summary()** function in file **utils.py** to count the number of trainable parameters for each model size. The output of the function for the smallest model size is in file **model_summary.txt**.
+I used the **get_gpt2_model()** and **model_summary()** functions in file **utils.py** to count the number of trainable parameters for each model size. The output of the function for the smallest model size is in file **model_summary.txt**.
 
 Running the script for all the model sizes in the GPT-2 paper gave the following results.
 
@@ -246,6 +246,8 @@ The first two model sizes are different from the numbers given in the GPT-2 pape
 
 Here I had to do some research as I could not find any explanation for these differences. I found out from different sources that OpenAI's numbers actually are inaccurate. Mine are correct.
 
+To avoid confusion and make it easier to remember, I used 'gpt2', 'gpt2-medium', 'gpt2-large' and 'gpt2-xl' for the model sizes, like with the Hugging Face model.
+
 
 ## 11. Loading OpenAI's pretrained weights
 
@@ -254,7 +256,7 @@ OpenAI's weights for GPT-2 models can be obtained from multiple sources. I used 
 Keras stores the list of trainable variables of a model in its **trainable_variables** attribute. The simplest approach to transfer the weights from a source model to a target model is to ensure that the elements of their lists of variables match one-to-one. Then, a simple loop through the variable lists is sufficient to read the weights from the source model and write them to the target model.
 
 There are two conditions to make this possible:
-1. Both models must share the same decomposition in layers and sub-layers.
+1. Both models must share the same organization in layers and sub-layers.
 2. Layers must be declared in the same order in both **__init()__** methods.
 
 The variables of my model matched those of the Hugging Face model right away, with no change required to my model. I strictly followed the model architecture described in the research papers, and Hugging Face clearly did the same.
@@ -285,6 +287,6 @@ To align my model with the Huggin Face model, I removed the token embeddings sca
 
 File **generate_text.py** contains functions to generate text, one token at a time.
 
-Greedy selection of the next token, temperature and top-k are supported.
+Greedy prediction of the next token, temperature and top-k are supported.
 
 Refer to the comments in the file for explanations on how to use it.

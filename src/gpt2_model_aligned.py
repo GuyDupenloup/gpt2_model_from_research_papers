@@ -2,13 +2,20 @@
 import tensorflow as tf
 
 
+MODEL_CONFIGS = {
+    'gpt2':        {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 768,  'n_layers': 12, 'n_heads': 12},
+    'gpt2-medium': {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1024, 'n_layers': 24, 'n_heads': 16},
+    'gpt2-large':  {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1280, 'n_layers': 36, 'n_heads': 20},
+    'gpt2-xl':     {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1600, 'n_layers': 48, 'n_heads': 25}
+}
+
+
 class MultiHeadAttention(tf.keras.layers.Layer):
-    def __init__(self, d_model, n_heads, attention_mask, name=None, **kwargs):
+    def __init__(self, d_model, n_heads, name=None, **kwargs):
         super().__init__(name=name, **kwargs)
 
         self.d_model = d_model
         self.n_heads = n_heads
-        self.attention_mask = attention_mask
 
         assert d_model % n_heads == 0, "d_model must be divisible by n_heads"
         self.d_head = d_model // n_heads
@@ -20,7 +27,7 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         self.c_proj = tf.keras.layers.Dense(d_model, name='c_proj')
 
 
-    def call(self, input, training=False):
+    def call(self, input, attention_mask=None, training=False):
 
         batch, seq_len, _ = tf.unstack(tf.shape(input))
 
@@ -44,9 +51,9 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         scores = tf.matmul(Q, tf.transpose(K, perm=[0, 1, 3, 2]))
 
         epsilon = tf.constant(-1e9, dtype=tf.float32)
-        if self.attention_mask is not None:
+        if attention_mask is not None:
             # Apply the attention mask (mask out padding tokens in keys)
-            attn_mask = self.attention_mask[:, None, None, :]  # Broadcast to (batch, 1, 1, seq_len) to mask keys
+            attn_mask = attention_mask[:, None, None, :]  # Broadcast to (batch, 1, 1, seq_len) to mask keys
             scores = tf.where(attn_mask == 0, epsilon, scores)
 
         # Apply causal attention using a triangular matrix
@@ -87,14 +94,14 @@ class GPT2FeedForwardNetwork(tf.keras.layers.Layer):
 
 
 class GPT2Transformer(tf.keras.layers.Layer):
-    def __init__(self, d_model, n_heads, attention_mask, dropout_rate, name=None, **kwargs):
+    def __init__(self, d_model, n_heads, dropout_rate, name=None, **kwargs):
         super().__init__(name=name, **kwargs)
 
         # 1st LayerNorm layer
         self.norm_1 = tf.keras.layers.LayerNormalization(epsilon=1e-5, name='lnorm_1')
         
         # Multi-head attention block
-        self.attention = MultiHeadAttention(d_model, n_heads, attention_mask, name='attention')
+        self.attention = MultiHeadAttention(d_model, n_heads, name='attention')
         
         # 2nd LayerNorm layer
         self.norm_2 = tf.keras.layers.LayerNormalization(epsilon=1e-5, name='lnorm_2')
@@ -107,10 +114,10 @@ class GPT2Transformer(tf.keras.layers.Layer):
         self.dropout_2 = tf.keras.layers.Dropout(rate=dropout_rate)
 
 
-    def call(self, input, training=False):
+    def call(self, input, attention_mask=None, training=False):
 
         input_norm = self.norm_1(input)
-        attn_out = self.attention(input_norm, training=training)
+        attn_out = self.attention(input_norm, attention_mask=attention_mask, training=training)
         attn_out = self.dropout_1(attn_out, training=training)
 
         # Residual connection
@@ -126,25 +133,43 @@ class GPT2Transformer(tf.keras.layers.Layer):
         return output
 
 
-class GPT2Model(tf.keras.layers.Layer):
+class GPT2Model(tf.keras.models.Model):
+    """
+        Arguments:
+            model_size:
+                Size of the model, one of ('gpt2', 'gpt2-medium', 'gpt2-large', 'gpt2-xl').
 
-    def __init__(self, vocab_size, seq_len, d_model, n_heads, n_layers, attention_mask=None, dropout_rate=0.1, name=None, **kwargs):
-        super().__init__(name=name, **kwargs)
+            dropout_rate:
+                Dropout rate for dropout layers (defaults to 0.1)
+
+        Returns:
+            Logits over vocabulary
+            A tensor of floats with shape (batch_size, seq_len, vocabulary)
+    """
+
+    def __init__(self, model_size, dropout_rate=0.1, **kwargs):
+        super().__init__(name=model_size, **kwargs)
         
+        # Get model config parameters
+        config = MODEL_CONFIGS[model_size]
+        vocab_size, seq_len, d_model, n_layers, n_heads = (
+            config[k] for k in ('vocab_size', 'seq_len', 'd_model', 'n_layers', 'n_heads')
+        )
+
         self.token_embed_layer = tf.keras.layers.Embedding(vocab_size, d_model, name='token_embd')
         self.position_embed_layer = tf.keras.layers.Embedding(seq_len, d_model, name='position_embd')
 
         self.dropout = tf.keras.layers.Dropout(rate=dropout_rate)
         
         self.transformer_blocks = [
-            GPT2Transformer(d_model, n_heads, attention_mask, dropout_rate, name=f'transformer_{i}') 
+            GPT2Transformer(d_model, n_heads, dropout_rate, name=f'transformer_{i}') 
             for i in range(n_layers)
         ]
 
         self.norm_f = tf.keras.layers.LayerNormalization(epsilon=1e-5, name='lnorm_f')
     
 
-    def call(self, input, training=False):
+    def call(self, input, attention_mask=None, training=False):
         seq_len = tf.shape(input)[1]
         
         token_embed = self.token_embed_layer(input)
@@ -157,7 +182,7 @@ class GPT2Model(tf.keras.layers.Layer):
         x = self.dropout(x, training=training)
         
         for block in self.transformer_blocks:
-            x = block(x, training=training)
+            x = block(x, attention_mask=attention_mask, training=training)
 
         x = self.norm_f(x)
 

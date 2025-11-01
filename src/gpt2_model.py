@@ -2,6 +2,14 @@
 import tensorflow as tf
 
 
+MODEL_CONFIGS = {
+    'gpt2':        {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 768,  'n_layers': 12, 'n_heads': 12},
+    'gpt2-medium': {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1024, 'n_layers': 24, 'n_heads': 16},
+    'gpt2-large':  {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1280, 'n_layers': 36, 'n_heads': 20},
+    'gpt2-xl':     {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1600, 'n_layers': 48, 'n_heads': 25}
+}
+
+
 class MultiHeadAttention(tf.keras.layers.Layer):
     def __init__(self, d_model, n_heads, name=None, **kwargs):
         super().__init__(name=name, **kwargs)
@@ -71,7 +79,11 @@ class GPT2FeedForwardNetwork(tf.keras.layers.Layer):
     def __init__(self, d_model, name=None, **kwargs):
         super().__init__(name=name, **kwargs)
 
-        self.ff_inner = tf.keras.layers.Dense(4 * d_model, activation=tf.keras.activations.gelu, name='ffn_inner')
+        self.ff_inner = tf.keras.layers.Dense(
+            4 * d_model,
+            activation=tf.keras.activations.gelu,
+            name='ffn_inner'
+        )
         self.ff_out = tf.keras.layers.Dense(d_model, name='ffn_out')
 
     def call(self, input, training=False):
@@ -120,10 +132,29 @@ class GPT2Transformer(tf.keras.layers.Layer):
         return output
 
 
-class GPT2Model(tf.keras.layers.Layer):
+class GPT2Model(tf.keras.models.Model):
+    """
+        Arguments:
+            model_size:
+                Size of the model, one of ('gpt2', 'gpt2-medium', 'gpt2-large', 'gpt2-xl').
+                
+            dropout_rate:
+                Dropout rate for dropout layers. Defaults to 0.
 
-    def __init__(self, vocab_size, seq_len, d_model, n_heads, n_layers, dropout_rate=0.1, name=None, **kwargs):
-        super().__init__(name=name, **kwargs)
+        Returns:
+            Probabilities of output tokens over the vocabulary.
+            A tensor of floats with shape (batch_size, seq_len, vocabulary)
+    """
+
+    def __init__(self, model_size, dropout_rate=0.1, **kwargs):
+        super().__init__(name=model_size, **kwargs)
+
+        # Get model config parameters
+        config = MODEL_CONFIGS[model_size]
+        vocab_size, seq_len, d_model, n_layers, n_heads = (
+            config[k] for k in ('vocab_size', 'seq_len', 'd_model', 'n_layers', 'n_heads')
+        )
+        self.d_model = d_model
 
         # Token and position embeddings
         self.token_embed_layer = tf.keras.layers.Embedding(vocab_size, d_model, name='token_embd')
@@ -139,7 +170,7 @@ class GPT2Model(tf.keras.layers.Layer):
 
         self.norm_f = tf.keras.layers.LayerNormalization(epsilon=1e-5, name='lnorm_f')
 
-        self.softmax = tf.keras.layers.Softmax()
+        self.softmax = tf.keras.layers.Softmax(axis=-1)
 
 
     def call(self, input, training=False):
@@ -169,6 +200,6 @@ class GPT2Model(tf.keras.layers.Layer):
         # Output layer: reuse token embedding weights
         logits = tf.matmul(x, We, transpose_b=True)
 
-        output = self.softmax(logits, axis=-1)
+        output = self.softmax(logits)
 
         return output
