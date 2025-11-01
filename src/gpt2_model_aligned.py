@@ -1,6 +1,7 @@
+# Copyright (c) 2025 Guy Dupenloup
+# Licensed under the MIT License. See LICENSE file for details.
 
 import tensorflow as tf
-
 
 MODEL_CONFIGS = {
     'gpt2':        {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 768,  'n_layers': 12, 'n_heads': 12},
@@ -138,7 +139,6 @@ class GPT2Model(tf.keras.models.Model):
         Arguments:
             model_size:
                 Size of the model, one of ('gpt2', 'gpt2-medium', 'gpt2-large', 'gpt2-xl').
-
             dropout_rate:
                 Dropout rate for dropout layers (defaults to 0.1)
 

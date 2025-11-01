@@ -1,3 +1,6 @@
+# Copyright (c) 2025 Guy Dupenloup
+# Licensed under the MIT License. See LICENSE file for details.
+
 import tensorflow as tf
 import tiktoken
 from utils import get_gpt2_model
@@ -43,32 +46,27 @@ def generate_output_tokens(
     Arguments:
         model:
             Keras model to use to generate tokens
-
         tokens_in:
             Input tokens, a tensor of tf.in32 values with shape (batch_size, context_len)
-
         output_len:
             Length of the sequence of output tokens (positive integer)
-
         greedy:
             If True, the token with the largest probability is always selected as the next token.
-
         temperature:
             Used to scale logit values:
             - No effect if 1.0
             - Less randomness if < 1.0
             - More randomness if > 1.0
-
         k:
             if greater than 0:
             - The k tokens with the largest probabilities are selected
             - The next token is sampled from these k elements
 
     Returns:
-        Sequences of tokens, a tensor of tf.int32 with shape (batch_size, output_len)            
-        Values are indices in the vocabulary.
-
+        Sequences of tokens, a tensor of tf.int32 with shape (batch_size, context_len + output_len)
+        This includes the original input tokens followed by the generated tokens.
     """
+
     tokens_out = tf.identity(tokens_in)
     context_len = tf.shape(tokens_in)[1]
 
@@ -118,9 +116,9 @@ text = (
     'learner and its ability to perform the various tasks was'
 )
 
-tokens_in = preprocess_text(text, context_len=1024, tokenizer=tokenizer)
+tokens_in, attention_mask = preprocess_text(text, context_len=1024, tokenizer=tokenizer)
 
-tokens_out, attention_mask = generate_output_tokens(
+tokens_out = generate_output_tokens(
     model,
     tokens_in,
     attention_mask=attention_mask,
@@ -130,8 +128,8 @@ tokens_out, attention_mask = generate_output_tokens(
     k=5
 )
 
-tokens_out = tokens_in[0]
-text_out = tokens_out.numpy().tolist()
+tokens_out = tokens_out[0]
+text_out = tokenizer.decode(tokens_out.numpy().tolist())
 
 print()
 print(text_out)

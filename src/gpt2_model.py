@@ -1,3 +1,5 @@
+# Copyright (c) 2025 Guy Dupenloup
+# Licensed under the MIT License. See LICENSE file for details.
 
 import tensorflow as tf
 
