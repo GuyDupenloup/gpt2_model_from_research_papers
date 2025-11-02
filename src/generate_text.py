@@ -8,7 +8,7 @@ from utils import get_gpt2_model
 
 def preprocess_text(text, context_len, tokenizer):
     """
-    Converts a string to tokens.
+    Converts a string to tokens
 
     The list of tokens is:
         - truncated if it is longer than `context_len`
@@ -16,7 +16,7 @@ def preprocess_text(text, context_len, tokenizer):
     
     Returns:
         - Tokens and attention mask, two tensors of tf.int32 values with shape (1, context_len)
-        - Attention mask values are 0 for padding tokens, 1 otherwise
+        - Attention mask values are 0 for padding tokens, 1 otherwise.
     """
 
     tokens = tokenizer.encode(text)
@@ -59,8 +59,8 @@ def generate_output_tokens(
             - More randomness if > 1.0
         k:
             if greater than 0:
-            - The k tokens with the largest probabilities are selected
-            - The next token is sampled from these k elements
+            - The k tokens with the largest probabilities are selected.
+            - The next token is sampled from these k elements.
 
     Returns:
         Sequences of tokens, a tensor of tf.int32 with shape (batch_size, context_len + output_len)
