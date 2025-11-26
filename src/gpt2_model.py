@@ -4,14 +4,6 @@
 import tensorflow as tf
 
 
-MODEL_CONFIGS = {
-    'gpt2':        {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 768,  'n_layers': 12, 'n_heads': 12},
-    'gpt2-medium': {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1024, 'n_layers': 24, 'n_heads': 16},
-    'gpt2-large':  {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1280, 'n_layers': 36, 'n_heads': 20},
-    'gpt2-xl':     {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1600, 'n_layers': 48, 'n_heads': 25}
-}
-
-
 class MultiHeadAttention(tf.keras.layers.Layer):
     def __init__(self, d_model, n_heads, name=None, **kwargs):
         super().__init__(name=name, **kwargs)
@@ -148,13 +140,12 @@ class GPT2Model(tf.keras.models.Model):
             A tensor of floats with shape (batch_size, seq_len, vocabulary)
     """
 
-    def __init__(self, model_size, dropout_rate=0.1, **kwargs):
-        super().__init__(name=model_size, **kwargs)
+    def __init__(self, model_config, dropout_rate=0.1, name=None, **kwargs):
+        super().__init__(name=None, **kwargs)
 
         # Get model config parameters
-        config = MODEL_CONFIGS[model_size]
         vocab_size, seq_len, d_model, n_layers, n_heads = (
-            config[k] for k in ('vocab_size', 'seq_len', 'd_model', 'n_layers', 'n_heads')
+            model_config[k] for k in ('vocab_size', 'seq_len', 'd_model', 'n_layers', 'n_heads')
         )
         self.d_model = d_model
 
@@ -186,6 +177,7 @@ class GPT2Model(tf.keras.models.Model):
         # Add position embeddings
         positions = tf.range(start=0, limit=seq_len, delta=1)
         position_embed = self.position_embed_layer(positions)  # Shape: (seq_len, d_model)
+
         x = token_embed + position_embed[None, :, :]
 
         x = self.dropout(x, training=training)
@@ -205,3 +197,31 @@ class GPT2Model(tf.keras.models.Model):
         output = self.softmax(logits)
 
         return output
+
+
+class GPT2TextGenModel(tf.keras.models.Model):
+
+    def __init__(self, model_config, dropout_rate=0.1, name=None, **kwargs):
+        super().__init__(name=name, **kwargs)
+
+        self.config = model_config
+        self.gpt2_model = GPT2Model(config, dropout_rate=dropout_rate, name=name)
+
+        # Loss and metrics trackers
+        self.loss_tracker = tf.keras.metrics.Mean(name='loss')
+        self.accuracy_tracker = tf.keras.metrics.Mean(name='accuracy')
+        self.perplexity_tracker =  tf.keras.metrics.Mean(name='perplexity')
+
+
+    def call(self, data):
+
+        # data = {'input_ids': input_ids, 'attention_mask': attention_mask}
+        gpt2_output = self.gpt2_model(data)
+
+        # Text prediction linear layer (no trainable weights)
+        embedding_weights = self.gpt2_model.token_embed_layer.embeddings
+        logits = tf.matmul(gpt2_output, embedding_weights, transpose_b=True)
+
+		vocab_probs = tf.nn.softmax(logits, axis=-1)
+		
+        return vocab_probs

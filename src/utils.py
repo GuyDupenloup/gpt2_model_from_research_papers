@@ -4,55 +4,85 @@
 from tabulate import tabulate
 import numpy as np
 import tensorflow as tf
-
 from transformers import TFGPT2LMHeadModel
-from gpt2_model_aligned import GPT2Model, MODEL_CONFIGS
+from gpt2_model import GPT2TextGenModel
 
 
-def get_gpt2_model(model_size, pretrained=True):
-    """
-    Creates a GPT-2 model, and loads the pretrained weights from
-    the corresponding Hugging Face model if `pretrained` is True.
-    """
+def get_gpt2_model_config(model_name):
+    gpt2_configs = {
+        '117M': {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 768,  'n_layers': 12, 'n_heads': 12},
+        '345M': {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1024, 'n_layers': 24, 'n_heads': 16},
+        '774M': {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1280, 'n_layers': 36, 'n_heads': 20},
+        '1542M': {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1600, 'n_layers': 48, 'n_heads': 25}
+    }
 
-    # Get the model and build it
-    config = MODEL_CONFIGS[model_size]
-    model = GPT2Model(model_size)
+    assert model_name in gpt2_configs
+    config = gpt2_configs[model_name]
+    config['name'] = model_name
 
-    # Build the model
-    dummy_input = tf.random.uniform((1, config['seq_len']), minval=0, maxval=config['vocab_size'], dtype=tf.int32)
-    _ = model(dummy_input)
+    return config
 
-    if pretrained:
-        print(f'>>> Loading pretrained weights from Hugging Face `{model_size}` model')
 
-        # Get Hugging Face's model
-        hf_model = TFGPT2LMHeadModel.from_pretrained(model_size, from_pt=True)
+def get_hf_model_name(model_name):
+    name_mapping = {
+        '117M': 'gpt2', '345M': 'gpt2-medium', '774M': 'gpt2-large', '1542M': 'gpt2-xl'
+    }
+    assert model_name in name_mapping
+    
+    return name_mapping[model_name]
 
-        # Get the pretrained weights
-        weights = hf_model.get_weights()
 
-        # Convert shapes (1, N) to (N,)
-        vars = model.trainable_variables
+def get_gpt2_model(model_name, pretrained=True):
 
-        for i in range(len(weights)):
-            var_name = vars[i].name
-            ws = np.shape(weights[i])
-            if var_name[-6:] == 'bias:0' and len(ws) == 2 and ws[0] == 1:
-                weights[i] = np.squeeze(weights[i])
+    # Create the model
+    model_config = get_gpt2_model_config(model_name)
+    model = GPT2TextGenModel(model_config)
 
-        model.set_weights(weights)
+    # Build the model using dummy inputs
+    seq_len = model_config['seq_len']
+    vocab_size = model_config['vocab_size']
+    dummy_inputs = {
+        'input_ids': tf.random.uniform((1, seq_len), minval=0, maxval=vocab_size, dtype=tf.int32),
+        'attention_mask': tf.random.uniform((1, seq_len), minval=0, maxval=2, dtype=tf.int32)
+    }
+    _ = model(dummy_inputs)
+
+	if pretrained:
+		# Get corresponding HF model name
+		hf_model_name = get_hf_model_name(model_name)
+		print(f'>> Loading pretrained weights from Hugging Face `{hf_model_name}` model')
+
+		# Get HF model with pretrained weights from PyTorch
+		hf_model = TFGPT2LMHeadModel.from_pretrained(hf_model_name, from_pt=True)
+
+		# Check that the two models have the same number of trainable variables
+		num_vars = len(model.trainable_variables)
+		hf_num_vars = len(hf_model.trainable_variables)
+		assert num_vars == hf_num_vars
+
+		for i in range(num_vars):
+			weights = model.trainable_variables[i].numpy()
+			hf_weights = hf_model.trainable_variables[i].numpy()
+
+			# Reshape (1, N) weight shapes from HF's model to (N,)
+			hf_weights = np.squeeze(hf_weights)
+
+			# Check that the weights have the same shape and transfer them
+			assert weights.shape == hf_weights.shape
+			model.trainable_variables[i].assign(hf_weights)
 
     return model
 
 
-def model_summary(model):
+def print_trainable_vars(model_name):
     """
-    Prints model's trainable variables (names, shapes, number of parameters)
+    Prints model's trainable variables (name, shape, number of parameters)
     """
 
+    model = create_gpt2_model(model_name, pretrained=False)
+
     print('\n' + '=' * 80)
-    print(f"  Trainable variables of model `{model.name}`")
+    print(f"  Trainable variables of model `{model_name}`")
     print('=' * 80 + '\n')
 
     headers = ['Variable', 'Shape', '#Params']
@@ -68,30 +98,27 @@ def model_summary(model):
     print(f'\nTotal trainable parameters: {total_params:,.0f}')
 
 
-def compare_train_vars(model_size):
+def compare_trainable_vars(model_name):
     """
     Prints trainable variables (names, shapes, number
     of parameters) for all GPT-2 model sizes
     """
 
-    # Get the models
-    model = get_gpt2_model(model_size)
-    hf_model = TFGPT2LMHeadModel.from_pretrained(model_size, from_pt=True)
+    # Create two equivalent models
+    model = create_gpt2_model(model_name, name='my_model')
+
+    hf_model_name = get_hf_model_name(model_name)
+    hf_model = TFGPT2LMHeadModel.from_pretrained(hf_model_name, from_pt=True, name='HF_model')
     
     print('\n' + '=' * 80)
-    print(f"  Trainable variables of `{model_size}` models")
-    print("Hugging Face's model variables are in second position")
+    print(f'  Trainable variables compared')
     print('=' * 80 + '\n')
 
-    vars = model.trainable_variables
-    hf_vars = hf_model.trainable_variables
-    if len(vars) != len(hf_vars):
-        raise ValueError(
-            f"The models don't have the same number of trainable variables ({len(vars)} vs. {len(hf_vars)})"
-        )
-
-    for i in range(len(model.trainable_variables)):
-        print(f'i = {i}')
-        print(f'{vars[i].name}    {vars[i].shape}')
-        print(f'{hf_vars[i].name}    {hf_vars[i].shape}')
-        print()
+    num_vars = len(model.trainable_variables)
+	assert len(hf_model.trainable_variables) == num_vars
+	
+    for i in num_vars:
+		var = model.trainable_variables[i]
+		hf_var = hf_model.trainable_variables[i]
+		print(f'\n{var.name}    {var.shape}')
+		print(f'{hf_var.name}    {hf_var.shape}')

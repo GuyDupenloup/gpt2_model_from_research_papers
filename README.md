@@ -5,7 +5,7 @@
 
 This repo contains a Tensorflow implementation of OpenAI's GPT-2 model.
 
-The main goal of this project was to construct the model using only these three research papers:
+The goal of this project was to construct the model using only these three research papers:
 
 - The original transformer paper published in 2017:
 
@@ -204,8 +204,7 @@ The Transformer paper describes the model output linear layer in section '3.4: E
     We also use the usual learned linear transformation and softmax function 
     to convert the decoder output to predicted next-token probabilities. In our model,
     we share the same weight matrix between the two embedding layers and the pre-softmax 
-    linear transformation, similar to [30]. In the embedding layers, we multiply those 
-    weights by sqrt(d_model)."
+    linear transformation, similar to [30]."
 
 The GPT paper describes the same linear layer in section '3.2 Supervised fine-tuning'. The GPT-2 paper does not mention it, so I assumed that it is the same as in the Transformer and GPT papers.
 
@@ -246,47 +245,30 @@ The first two model sizes are different from the numbers given in the GPT-2 pape
 
 Here I had to do some research as I could not find any explanation for these differences. I found out from different sources that OpenAI's numbers actually are inaccurate. Mine are correct.
 
-To avoid confusion and make it easier to remember, I used 'gpt2', 'gpt2-medium', 'gpt2-large' and 'gpt2-xl' for the model sizes, like with the Hugging Face model.
+Although the numbers of parameters of the first two models are not accurate in OpenAI's GPT-2 paper, I kept the same model names to avoid any confusion: 117M, 345M, 762M, 1542M.
 
 
 ## 11. Loading OpenAI's pretrained weights
 
 OpenAI's weights for GPT-2 models can be obtained from multiple sources. I used the **transformers** package developed by Hugging Face.
 
-Keras stores the list of trainable variables of a model in its **trainable_variables** attribute. The simplest approach to transfer the weights from a source model to a target model is to ensure that the elements of their lists of variables match one-to-one. Then, a simple loop through the variable lists is sufficient to read the weights from the source model and write them to the target model.
+Keras stores the list of trainable variables of a model in its **trainable_variables** attribute. The simplest approach to transfer the weights from a source model to a target model is to ensure that their lists of trainable variables match one-to-one. Then, a simple loop through the variable lists is sufficient to read the weights from the source model and write them to the target model.
 
 There are two conditions to make this possible:
 1. Both models must share the same organization in layers and sub-layers.
 2. Layers must be declared in the same order in both **__init()__** methods.
 
-The variables of my model matched those of the Hugging Face model right away, with no change required to my model. I strictly followed the model architecture described in the research papers, and Hugging Face clearly did the same.
+The variables of my model matched those of the Hugging Face model right away, with no change required to my model. This is not due to luck. I strictly followed the model architecture described in the research papers, and Hugging Face clearly did the same.
 
 I used the **compare_train_vars()** function in file **utils.py** to print and compare the trainable variables of both models. The output of the function for the smallest model size is in file **train_vars.txt**. It shows that the variables match one-to-one (although they have different names).
 
 There is one difference, though. Bias variables in the Hugging Face model have shape (1, N) while in my model they have shape (N,), which is the shape Keras gives them. Biases have to be broadcasted, and using the (1, N) shape has the advantage of making the broadcasting axis explicit. However, it is more complex as it requires custom layers.
 
-For the sake of simplicity, given that Keras automatically handles broadcasting, I stuck with the standard layers. When transferring the weights, I just had to reshape the bias layers in the Hugging Face model from (1, N) to (N,).
+For the sake of simplicity, I stuck with Keras standard layers. When transferring the weights, I just had to reshape the bias layers in the Hugging Face model from (1, N) to (N,).
 
 
-## 12. Aligning with OpenAI's model
+## 12. Conclusion
 
-After completing my model, I verified its alignment with OpenAI’s implementation and the Hugging Face reference model.
+This concludes my GPT-2 model creation project.
 
-I found three differences:
-
-1. **Token embeddings scaling**: In OpenAI's GPT-2 model, the token embeddings are not scaled by sqrt(d_model) like in the original transformer. This was not mentioned anywhere in the GPT or GPT-2 paper.
-
-2. **Model output**: I used a softmax to output next-token probabilities as described in the Transformer paper. The Hugging Face model outputs logits.
-
-3. **Attention mask**: The Hugging Face model includes an optional attention mask that can be used to avoid that the model attends to padding tokens. It is unclear if the original transformer, GPT or GPT-2 models had it.
-
-To align my model with the Huggin Face model, I removed the token embeddings scaling and the softmax. I also added an optional attention mask. The updated model is in file **gpt2_model_aligned.py**.
-
-
-## 13. Generating text with the final model
-
-File **generate_text.py** contains functions to generate text, one token at a time.
-
-Greedy prediction of the next token, temperature and top-k are supported.
-
-Refer to the comments in the file for explanations on how to use it.
+If you want to see the model in action, check out my [GPT-2 model-tuning project](https://github.com/GuyDupenloup/gpt2_model_tuning?tab=readme-ov-file) on Github.
