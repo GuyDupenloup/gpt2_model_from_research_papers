@@ -229,7 +229,7 @@ Like in the Transformer paper, I concatenated the Wq, Wk and Wv matrices in a si
 
 Function *print_trainable_variables()* in *model_utils.py* prints the trainable variables of a model, showing their shapes and number of parameters.
 
-The output of this function for the '124M' model is in file *model_vars.txt*.
+The output of this function for the smallest model size is in file *model_vars.txt*.
 
 Running this function for all the model sizes in the GPT-2 paper gave the following results.
 
