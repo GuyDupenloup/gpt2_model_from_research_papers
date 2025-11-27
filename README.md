@@ -227,7 +227,7 @@ Like in the Transformer paper, I concatenated the Wq, Wk and Wv matrices in a si
 
 ## 10. Model parameter counts
 
-Function *print_trainable_variables()* functions in *model_utils.py* prints the trainable variables of a model, showing their shapes and number of parameters.
+Function *print_trainable_variables()* in *model_utils.py* prints the trainable variables of a model, showing their shapes and number of parameters.
 
 The output of this function for the '124M' model is in file *model_vars.txt*.
 
@@ -256,8 +256,6 @@ Keras stores the list of trainable variables of a model in its **trainable_varia
 There are two conditions to make this possible:
 1. Both models must share the same organization in layers and sub-layers.
 2. Layers must be declared in the same order in both *\_\_init()\_\_* methods.
-
-The variables of my model matched those of the Hugging Face model right away, with no change required to my model. This is not due to luck. I strictly followed the model architecture described in the research papers, and Hugging Face clearly did the same.
 
 Function *transfer_pretrained_weights()* in *model_utils.py* uses a Hugging Face model to get OpenAI's pretrained weights. This function prints the trainable variables of both models and makes it easy to check whether they align. The output of the function for the '124M' model size is in file *model_vars.txt*. It shows that the variables match one-to-one (although they have different names). Hugging Face also strictly followed the architecture described in the research papers.
 
