@@ -50,11 +50,8 @@ The files for this project are in the **/src** directory and are listed in the t
 | Filename                |  Contents                                                                |
 |-------------------------|--------------------------------------------------------------------------|
 | gpt2_model.py           |  GPT-2 model                                                             |
-| gpt2_model_aligned.py   |  GPT-2 model aligned with Hugging Face model                             |
-| utils.py                |  Utilities and shared functions                                          |
-| model_summary.txt       |  Summary of the smallest GPT-2 model (layer shapes and parameters)       |
-| train_vars.txt          |  Comparison of trainable variables in my model and Hugging Face's model  |
-| generate_text.py        |  Script to generate text with the model                                  |
+| model_utils.py          |  Create a model, print trainable variables, transfer pretrained weights from Hugging Face model |
+| model_vars.txt          |  Output of script *model_utils.py*                                       |
 
 
 ## 4. GPT-2 decoder-only architecture
@@ -230,9 +227,11 @@ Like in the Transformer paper, I concatenated the Wq, Wk and Wv matrices in a si
 
 ## 10. Model parameter counts
 
-I used the **get_gpt2_model()** and **model_summary()** functions in file **utils.py** to count the number of trainable parameters for each model size. The output of the function for the smallest model size is in file **model_summary.txt**.
+Function *print_trainable_variables()* functions in *model_utils.py* prints the trainable variables of a model, showing their shapes and number of parameters.
 
-Running the script for all the model sizes in the GPT-2 paper gave the following results.
+The output of this function for the '124M' model is in file *model_vars.txt*.
+
+Running this function for all the model sizes in the GPT-2 paper gave the following results.
 
 | GPT-2 paper   | My model    |
 |---------------|-------------|
@@ -245,7 +244,7 @@ The first two model sizes are different from the numbers given in the GPT-2 pape
 
 Here I had to do some research as I could not find any explanation for these differences. I found out from different sources that OpenAI's numbers actually are inaccurate. Mine are correct.
 
-Although the numbers of parameters of the first two models are not accurate in OpenAI's GPT-2 paper, I kept the same model names to avoid any confusion: 117M, 345M, 762M, 1542M.
+In the code, I used the names '124M' and '355M'for the first two models, which correspond to the accurate sizes of the model.
 
 
 ## 11. Loading OpenAI's pretrained weights
@@ -256,11 +255,11 @@ Keras stores the list of trainable variables of a model in its **trainable_varia
 
 There are two conditions to make this possible:
 1. Both models must share the same organization in layers and sub-layers.
-2. Layers must be declared in the same order in both **__init()__** methods.
+2. Layers must be declared in the same order in both *\_\_init()\_\_* methods.
 
 The variables of my model matched those of the Hugging Face model right away, with no change required to my model. This is not due to luck. I strictly followed the model architecture described in the research papers, and Hugging Face clearly did the same.
 
-I used the **compare_train_vars()** function in file **utils.py** to print and compare the trainable variables of both models. The output of the function for the smallest model size is in file **train_vars.txt**. It shows that the variables match one-to-one (although they have different names).
+Function *transfer_pretrained_weights()* in *model_utils.py* uses a Hugging Face model to get OpenAI's pretrained weights. This function prints the trainable variables of both models and makes it easy to check whether they align. The output of the function for the '124M' model size is in file *model_vars.txt*. It shows that the variables match one-to-one (although they have different names). Hugging Face also strictly followed the architecture described in the research papers.
 
 There is one difference, though. Bias variables in the Hugging Face model have shape (1, N) while in my model they have shape (N,), which is the shape Keras gives them. Biases have to be broadcasted, and using the (1, N) shape has the advantage of making the broadcasting axis explicit. However, it is more complex as it requires custom layers.
 

@@ -222,15 +222,15 @@ class GPT2Model(tf.keras.models.Model):
 
 class GPT2LanguageModel(tf.keras.models.Model):
     """
-    Output language modeling linear layer.
-    Projects the final hidden state representation to the vocabulary.
-    The weights of the projection matrix are shared with the token embedding matrix.
+    GPT-2 language modeling model.
 
-    See docstring of GPT2Model for arguments and returns.
+    See docstring of GPT2Model for a description of arguments and returns.
     """
 
     def __init__(self, model_config, dropout_rate=0.1, name=None, **kwargs):
         super().__init__(name=name, **kwargs)
+
+        self.config = model_config
 
         # GPT-2 model
         self.gpt2_model = GPT2Model(model_config, dropout_rate=dropout_rate, name=name)
@@ -241,14 +241,11 @@ class GPT2LanguageModel(tf.keras.models.Model):
         Forward pass through the GPT2 language model.
         """
 
-        # Pass inputs through GPT-2 model
         gpt2_output = self.gpt2_model(inputs)
 
-        # Get token embeddings matrix in GPT-2 model
+        # Output linear layer that projects hidden state representations to vocabulary.
+        # Weights of the projection matrix are shared with the token embedding matrix.
         embedding_weights = self.gpt2_model.token_embed_layer.embeddings
-
-        # Project to vocabulary, sharing the token embeddings weights.
-        # Shape: (batch, seq_len, d_model) @ (vocab_size, d_model)^T -> (batch, seq_len, vocab_size)
         logits = tf.matmul(gpt2_output, embedding_weights, transpose_b=True)
 
         return logits

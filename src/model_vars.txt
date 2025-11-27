@@ -1,0 +1,709 @@
+================================================================================
+  Trainable variables of model `124M`
+================================================================================
+
+| Variable                                                    |    Shape     |    #Params |
+|:------------------------------------------------------------|:------------:|-----------:|
+| gpt2_LM/gpt2_LM/tkn_emb/embeddings:0                        | (50257, 768) | 38,597,376 |
+| gpt2_LM/gpt2_LM/pos_emb/embeddings:0                        | (1024, 768)  |    786,432 |
+| gpt2_LM/gpt2_LM/transformer_0/ln_1/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_0/ln_1/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_0/attn_heads/W_qkv/kernel:0     | (768, 2304)  |  1,769,472 |
+| gpt2_LM/gpt2_LM/transformer_0/attn_heads/W_qkv/bias:0       |   (2304,)    |      2,304 |
+| gpt2_LM/gpt2_LM/transformer_0/attn_heads/out_proj/kernel:0  |  (768, 768)  |    589,824 |
+| gpt2_LM/gpt2_LM/transformer_0/attn_heads/out_proj/bias:0    |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_0/ln_2/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_0/ln_2/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_0/ffn/ffn_inner/kernel:0        | (768, 3072)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_0/ffn/ffn_inner/bias:0          |   (3072,)    |      3,072 |
+| gpt2_LM/gpt2_LM/transformer_0/ffn/ffn_out/kernel:0          | (3072, 768)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_0/ffn/ffn_out/bias:0            |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_1/ln_1/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_1/ln_1/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_1/attn_heads/W_qkv/kernel:0     | (768, 2304)  |  1,769,472 |
+| gpt2_LM/gpt2_LM/transformer_1/attn_heads/W_qkv/bias:0       |   (2304,)    |      2,304 |
+| gpt2_LM/gpt2_LM/transformer_1/attn_heads/out_proj/kernel:0  |  (768, 768)  |    589,824 |
+| gpt2_LM/gpt2_LM/transformer_1/attn_heads/out_proj/bias:0    |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_1/ln_2/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_1/ln_2/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_1/ffn/ffn_inner/kernel:0        | (768, 3072)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_1/ffn/ffn_inner/bias:0          |   (3072,)    |      3,072 |
+| gpt2_LM/gpt2_LM/transformer_1/ffn/ffn_out/kernel:0          | (3072, 768)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_1/ffn/ffn_out/bias:0            |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_2/ln_1/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_2/ln_1/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_2/attn_heads/W_qkv/kernel:0     | (768, 2304)  |  1,769,472 |
+| gpt2_LM/gpt2_LM/transformer_2/attn_heads/W_qkv/bias:0       |   (2304,)    |      2,304 |
+| gpt2_LM/gpt2_LM/transformer_2/attn_heads/out_proj/kernel:0  |  (768, 768)  |    589,824 |
+| gpt2_LM/gpt2_LM/transformer_2/attn_heads/out_proj/bias:0    |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_2/ln_2/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_2/ln_2/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_2/ffn/ffn_inner/kernel:0        | (768, 3072)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_2/ffn/ffn_inner/bias:0          |   (3072,)    |      3,072 |
+| gpt2_LM/gpt2_LM/transformer_2/ffn/ffn_out/kernel:0          | (3072, 768)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_2/ffn/ffn_out/bias:0            |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_3/ln_1/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_3/ln_1/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_3/attn_heads/W_qkv/kernel:0     | (768, 2304)  |  1,769,472 |
+| gpt2_LM/gpt2_LM/transformer_3/attn_heads/W_qkv/bias:0       |   (2304,)    |      2,304 |
+| gpt2_LM/gpt2_LM/transformer_3/attn_heads/out_proj/kernel:0  |  (768, 768)  |    589,824 |
+| gpt2_LM/gpt2_LM/transformer_3/attn_heads/out_proj/bias:0    |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_3/ln_2/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_3/ln_2/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_3/ffn/ffn_inner/kernel:0        | (768, 3072)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_3/ffn/ffn_inner/bias:0          |   (3072,)    |      3,072 |
+| gpt2_LM/gpt2_LM/transformer_3/ffn/ffn_out/kernel:0          | (3072, 768)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_3/ffn/ffn_out/bias:0            |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_4/ln_1/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_4/ln_1/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_4/attn_heads/W_qkv/kernel:0     | (768, 2304)  |  1,769,472 |
+| gpt2_LM/gpt2_LM/transformer_4/attn_heads/W_qkv/bias:0       |   (2304,)    |      2,304 |
+| gpt2_LM/gpt2_LM/transformer_4/attn_heads/out_proj/kernel:0  |  (768, 768)  |    589,824 |
+| gpt2_LM/gpt2_LM/transformer_4/attn_heads/out_proj/bias:0    |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_4/ln_2/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_4/ln_2/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_4/ffn/ffn_inner/kernel:0        | (768, 3072)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_4/ffn/ffn_inner/bias:0          |   (3072,)    |      3,072 |
+| gpt2_LM/gpt2_LM/transformer_4/ffn/ffn_out/kernel:0          | (3072, 768)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_4/ffn/ffn_out/bias:0            |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_5/ln_1/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_5/ln_1/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_5/attn_heads/W_qkv/kernel:0     | (768, 2304)  |  1,769,472 |
+| gpt2_LM/gpt2_LM/transformer_5/attn_heads/W_qkv/bias:0       |   (2304,)    |      2,304 |
+| gpt2_LM/gpt2_LM/transformer_5/attn_heads/out_proj/kernel:0  |  (768, 768)  |    589,824 |
+| gpt2_LM/gpt2_LM/transformer_5/attn_heads/out_proj/bias:0    |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_5/ln_2/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_5/ln_2/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_5/ffn/ffn_inner/kernel:0        | (768, 3072)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_5/ffn/ffn_inner/bias:0          |   (3072,)    |      3,072 |
+| gpt2_LM/gpt2_LM/transformer_5/ffn/ffn_out/kernel:0          | (3072, 768)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_5/ffn/ffn_out/bias:0            |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_6/ln_1/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_6/ln_1/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_6/attn_heads/W_qkv/kernel:0     | (768, 2304)  |  1,769,472 |
+| gpt2_LM/gpt2_LM/transformer_6/attn_heads/W_qkv/bias:0       |   (2304,)    |      2,304 |
+| gpt2_LM/gpt2_LM/transformer_6/attn_heads/out_proj/kernel:0  |  (768, 768)  |    589,824 |
+| gpt2_LM/gpt2_LM/transformer_6/attn_heads/out_proj/bias:0    |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_6/ln_2/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_6/ln_2/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_6/ffn/ffn_inner/kernel:0        | (768, 3072)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_6/ffn/ffn_inner/bias:0          |   (3072,)    |      3,072 |
+| gpt2_LM/gpt2_LM/transformer_6/ffn/ffn_out/kernel:0          | (3072, 768)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_6/ffn/ffn_out/bias:0            |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_7/ln_1/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_7/ln_1/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_7/attn_heads/W_qkv/kernel:0     | (768, 2304)  |  1,769,472 |
+| gpt2_LM/gpt2_LM/transformer_7/attn_heads/W_qkv/bias:0       |   (2304,)    |      2,304 |
+| gpt2_LM/gpt2_LM/transformer_7/attn_heads/out_proj/kernel:0  |  (768, 768)  |    589,824 |
+| gpt2_LM/gpt2_LM/transformer_7/attn_heads/out_proj/bias:0    |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_7/ln_2/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_7/ln_2/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_7/ffn/ffn_inner/kernel:0        | (768, 3072)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_7/ffn/ffn_inner/bias:0          |   (3072,)    |      3,072 |
+| gpt2_LM/gpt2_LM/transformer_7/ffn/ffn_out/kernel:0          | (3072, 768)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_7/ffn/ffn_out/bias:0            |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_8/ln_1/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_8/ln_1/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_8/attn_heads/W_qkv/kernel:0     | (768, 2304)  |  1,769,472 |
+| gpt2_LM/gpt2_LM/transformer_8/attn_heads/W_qkv/bias:0       |   (2304,)    |      2,304 |
+| gpt2_LM/gpt2_LM/transformer_8/attn_heads/out_proj/kernel:0  |  (768, 768)  |    589,824 |
+| gpt2_LM/gpt2_LM/transformer_8/attn_heads/out_proj/bias:0    |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_8/ln_2/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_8/ln_2/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_8/ffn/ffn_inner/kernel:0        | (768, 3072)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_8/ffn/ffn_inner/bias:0          |   (3072,)    |      3,072 |
+| gpt2_LM/gpt2_LM/transformer_8/ffn/ffn_out/kernel:0          | (3072, 768)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_8/ffn/ffn_out/bias:0            |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_9/ln_1/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_9/ln_1/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_9/attn_heads/W_qkv/kernel:0     | (768, 2304)  |  1,769,472 |
+| gpt2_LM/gpt2_LM/transformer_9/attn_heads/W_qkv/bias:0       |   (2304,)    |      2,304 |
+| gpt2_LM/gpt2_LM/transformer_9/attn_heads/out_proj/kernel:0  |  (768, 768)  |    589,824 |
+| gpt2_LM/gpt2_LM/transformer_9/attn_heads/out_proj/bias:0    |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_9/ln_2/gamma:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_9/ln_2/beta:0                   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_9/ffn/ffn_inner/kernel:0        | (768, 3072)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_9/ffn/ffn_inner/bias:0          |   (3072,)    |      3,072 |
+| gpt2_LM/gpt2_LM/transformer_9/ffn/ffn_out/kernel:0          | (3072, 768)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_9/ffn/ffn_out/bias:0            |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_10/ln_1/gamma:0                 |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_10/ln_1/beta:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_10/attn_heads/W_qkv/kernel:0    | (768, 2304)  |  1,769,472 |
+| gpt2_LM/gpt2_LM/transformer_10/attn_heads/W_qkv/bias:0      |   (2304,)    |      2,304 |
+| gpt2_LM/gpt2_LM/transformer_10/attn_heads/out_proj/kernel:0 |  (768, 768)  |    589,824 |
+| gpt2_LM/gpt2_LM/transformer_10/attn_heads/out_proj/bias:0   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_10/ln_2/gamma:0                 |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_10/ln_2/beta:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_10/ffn/ffn_inner/kernel:0       | (768, 3072)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_10/ffn/ffn_inner/bias:0         |   (3072,)    |      3,072 |
+| gpt2_LM/gpt2_LM/transformer_10/ffn/ffn_out/kernel:0         | (3072, 768)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_10/ffn/ffn_out/bias:0           |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_11/ln_1/gamma:0                 |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_11/ln_1/beta:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_11/attn_heads/W_qkv/kernel:0    | (768, 2304)  |  1,769,472 |
+| gpt2_LM/gpt2_LM/transformer_11/attn_heads/W_qkv/bias:0      |   (2304,)    |      2,304 |
+| gpt2_LM/gpt2_LM/transformer_11/attn_heads/out_proj/kernel:0 |  (768, 768)  |    589,824 |
+| gpt2_LM/gpt2_LM/transformer_11/attn_heads/out_proj/bias:0   |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_11/ln_2/gamma:0                 |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_11/ln_2/beta:0                  |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/transformer_11/ffn/ffn_inner/kernel:0       | (768, 3072)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_11/ffn/ffn_inner/bias:0         |   (3072,)    |      3,072 |
+| gpt2_LM/gpt2_LM/transformer_11/ffn/ffn_out/kernel:0         | (3072, 768)  |  2,359,296 |
+| gpt2_LM/gpt2_LM/transformer_11/ffn/ffn_out/bias:0           |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/lnorm_f/gamma:0                             |    (768,)    |        768 |
+| gpt2_LM/gpt2_LM/lnorm_f/beta:0                              |    (768,)    |        768 |
+
+Total trainable parameters: 124,439,808
+
+
+================================================================================
+  Trainable variables of model `124M` - Hugging Face in 2nd position
+================================================================================
+
+var #0
+gpt2_LM/gpt2_LM/tkn_emb/embeddings:0     (50257, 768)
+tfgpt2lm_head_model_3/transformer/wte/embeddings:0     (50257, 768)
+
+var #1
+gpt2_LM/gpt2_LM/pos_emb/embeddings:0     (1024, 768)
+tfgpt2lm_head_model_3/transformer/wpe/embeddings:0     (1024, 768)
+
+var #2
+gpt2_LM/gpt2_LM/transformer_0/ln_1/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._0/ln_1/gamma:0     (768,)
+
+var #3
+gpt2_LM/gpt2_LM/transformer_0/ln_1/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._0/ln_1/beta:0     (768,)
+
+var #4
+gpt2_LM/gpt2_LM/transformer_0/attn_heads/W_qkv/kernel:0     (768, 2304)
+tfgpt2lm_head_model_3/transformer/h_._0/attn/c_attn/weight:0     (768, 2304)
+
+var #5
+gpt2_LM/gpt2_LM/transformer_0/attn_heads/W_qkv/bias:0     (2304,)
+tfgpt2lm_head_model_3/transformer/h_._0/attn/c_attn/bias:0     (1, 2304)
+
+var #6
+gpt2_LM/gpt2_LM/transformer_0/attn_heads/out_proj/kernel:0     (768, 768)
+tfgpt2lm_head_model_3/transformer/h_._0/attn/c_proj/weight:0     (768, 768)
+
+var #7
+gpt2_LM/gpt2_LM/transformer_0/attn_heads/out_proj/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._0/attn/c_proj/bias:0     (1, 768)
+
+var #8
+gpt2_LM/gpt2_LM/transformer_0/ln_2/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._0/ln_2/gamma:0     (768,)
+
+var #9
+gpt2_LM/gpt2_LM/transformer_0/ln_2/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._0/ln_2/beta:0     (768,)
+
+var #10
+gpt2_LM/gpt2_LM/transformer_0/ffn/ffn_inner/kernel:0     (768, 3072)
+tfgpt2lm_head_model_3/transformer/h_._0/mlp/c_fc/weight:0     (768, 3072)
+
+var #11
+gpt2_LM/gpt2_LM/transformer_0/ffn/ffn_inner/bias:0     (3072,)
+tfgpt2lm_head_model_3/transformer/h_._0/mlp/c_fc/bias:0     (1, 3072)
+
+var #12
+gpt2_LM/gpt2_LM/transformer_0/ffn/ffn_out/kernel:0     (3072, 768)
+tfgpt2lm_head_model_3/transformer/h_._0/mlp/c_proj/weight:0     (3072, 768)
+
+var #13
+gpt2_LM/gpt2_LM/transformer_0/ffn/ffn_out/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._0/mlp/c_proj/bias:0     (1, 768)
+
+var #14
+gpt2_LM/gpt2_LM/transformer_1/ln_1/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._1/ln_1/gamma:0     (768,)
+
+var #15
+gpt2_LM/gpt2_LM/transformer_1/ln_1/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._1/ln_1/beta:0     (768,)
+
+var #16
+gpt2_LM/gpt2_LM/transformer_1/attn_heads/W_qkv/kernel:0     (768, 2304)
+tfgpt2lm_head_model_3/transformer/h_._1/attn/c_attn/weight:0     (768, 2304)
+
+var #17
+gpt2_LM/gpt2_LM/transformer_1/attn_heads/W_qkv/bias:0     (2304,)
+tfgpt2lm_head_model_3/transformer/h_._1/attn/c_attn/bias:0     (1, 2304)
+
+var #18
+gpt2_LM/gpt2_LM/transformer_1/attn_heads/out_proj/kernel:0     (768, 768)
+tfgpt2lm_head_model_3/transformer/h_._1/attn/c_proj/weight:0     (768, 768)
+
+var #19
+gpt2_LM/gpt2_LM/transformer_1/attn_heads/out_proj/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._1/attn/c_proj/bias:0     (1, 768)
+
+var #20
+gpt2_LM/gpt2_LM/transformer_1/ln_2/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._1/ln_2/gamma:0     (768,)
+
+var #21
+gpt2_LM/gpt2_LM/transformer_1/ln_2/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._1/ln_2/beta:0     (768,)
+
+var #22
+gpt2_LM/gpt2_LM/transformer_1/ffn/ffn_inner/kernel:0     (768, 3072)
+tfgpt2lm_head_model_3/transformer/h_._1/mlp/c_fc/weight:0     (768, 3072)
+
+var #23
+gpt2_LM/gpt2_LM/transformer_1/ffn/ffn_inner/bias:0     (3072,)
+tfgpt2lm_head_model_3/transformer/h_._1/mlp/c_fc/bias:0     (1, 3072)
+
+var #24
+gpt2_LM/gpt2_LM/transformer_1/ffn/ffn_out/kernel:0     (3072, 768)
+tfgpt2lm_head_model_3/transformer/h_._1/mlp/c_proj/weight:0     (3072, 768)
+
+var #25
+gpt2_LM/gpt2_LM/transformer_1/ffn/ffn_out/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._1/mlp/c_proj/bias:0     (1, 768)
+
+var #26
+gpt2_LM/gpt2_LM/transformer_2/ln_1/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._2/ln_1/gamma:0     (768,)
+
+var #27
+gpt2_LM/gpt2_LM/transformer_2/ln_1/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._2/ln_1/beta:0     (768,)
+
+var #28
+gpt2_LM/gpt2_LM/transformer_2/attn_heads/W_qkv/kernel:0     (768, 2304)
+tfgpt2lm_head_model_3/transformer/h_._2/attn/c_attn/weight:0     (768, 2304)
+
+var #29
+gpt2_LM/gpt2_LM/transformer_2/attn_heads/W_qkv/bias:0     (2304,)
+tfgpt2lm_head_model_3/transformer/h_._2/attn/c_attn/bias:0     (1, 2304)
+
+var #30
+gpt2_LM/gpt2_LM/transformer_2/attn_heads/out_proj/kernel:0     (768, 768)
+tfgpt2lm_head_model_3/transformer/h_._2/attn/c_proj/weight:0     (768, 768)
+
+var #31
+gpt2_LM/gpt2_LM/transformer_2/attn_heads/out_proj/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._2/attn/c_proj/bias:0     (1, 768)
+
+var #32
+gpt2_LM/gpt2_LM/transformer_2/ln_2/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._2/ln_2/gamma:0     (768,)
+
+var #33
+gpt2_LM/gpt2_LM/transformer_2/ln_2/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._2/ln_2/beta:0     (768,)
+
+var #34
+gpt2_LM/gpt2_LM/transformer_2/ffn/ffn_inner/kernel:0     (768, 3072)
+tfgpt2lm_head_model_3/transformer/h_._2/mlp/c_fc/weight:0     (768, 3072)
+
+var #35
+gpt2_LM/gpt2_LM/transformer_2/ffn/ffn_inner/bias:0     (3072,)
+tfgpt2lm_head_model_3/transformer/h_._2/mlp/c_fc/bias:0     (1, 3072)
+
+var #36
+gpt2_LM/gpt2_LM/transformer_2/ffn/ffn_out/kernel:0     (3072, 768)
+tfgpt2lm_head_model_3/transformer/h_._2/mlp/c_proj/weight:0     (3072, 768)
+
+var #37
+gpt2_LM/gpt2_LM/transformer_2/ffn/ffn_out/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._2/mlp/c_proj/bias:0     (1, 768)
+
+var #38
+gpt2_LM/gpt2_LM/transformer_3/ln_1/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._3/ln_1/gamma:0     (768,)
+
+var #39
+gpt2_LM/gpt2_LM/transformer_3/ln_1/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._3/ln_1/beta:0     (768,)
+
+var #40
+gpt2_LM/gpt2_LM/transformer_3/attn_heads/W_qkv/kernel:0     (768, 2304)
+tfgpt2lm_head_model_3/transformer/h_._3/attn/c_attn/weight:0     (768, 2304)
+
+var #41
+gpt2_LM/gpt2_LM/transformer_3/attn_heads/W_qkv/bias:0     (2304,)
+tfgpt2lm_head_model_3/transformer/h_._3/attn/c_attn/bias:0     (1, 2304)
+
+var #42
+gpt2_LM/gpt2_LM/transformer_3/attn_heads/out_proj/kernel:0     (768, 768)
+tfgpt2lm_head_model_3/transformer/h_._3/attn/c_proj/weight:0     (768, 768)
+
+var #43
+gpt2_LM/gpt2_LM/transformer_3/attn_heads/out_proj/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._3/attn/c_proj/bias:0     (1, 768)
+
+var #44
+gpt2_LM/gpt2_LM/transformer_3/ln_2/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._3/ln_2/gamma:0     (768,)
+
+var #45
+gpt2_LM/gpt2_LM/transformer_3/ln_2/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._3/ln_2/beta:0     (768,)
+
+var #46
+gpt2_LM/gpt2_LM/transformer_3/ffn/ffn_inner/kernel:0     (768, 3072)
+tfgpt2lm_head_model_3/transformer/h_._3/mlp/c_fc/weight:0     (768, 3072)
+
+var #47
+gpt2_LM/gpt2_LM/transformer_3/ffn/ffn_inner/bias:0     (3072,)
+tfgpt2lm_head_model_3/transformer/h_._3/mlp/c_fc/bias:0     (1, 3072)
+
+var #48
+gpt2_LM/gpt2_LM/transformer_3/ffn/ffn_out/kernel:0     (3072, 768)
+tfgpt2lm_head_model_3/transformer/h_._3/mlp/c_proj/weight:0     (3072, 768)
+
+var #49
+gpt2_LM/gpt2_LM/transformer_3/ffn/ffn_out/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._3/mlp/c_proj/bias:0     (1, 768)
+
+var #50
+gpt2_LM/gpt2_LM/transformer_4/ln_1/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._4/ln_1/gamma:0     (768,)
+
+var #51
+gpt2_LM/gpt2_LM/transformer_4/ln_1/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._4/ln_1/beta:0     (768,)
+
+var #52
+gpt2_LM/gpt2_LM/transformer_4/attn_heads/W_qkv/kernel:0     (768, 2304)
+tfgpt2lm_head_model_3/transformer/h_._4/attn/c_attn/weight:0     (768, 2304)
+
+var #53
+gpt2_LM/gpt2_LM/transformer_4/attn_heads/W_qkv/bias:0     (2304,)
+tfgpt2lm_head_model_3/transformer/h_._4/attn/c_attn/bias:0     (1, 2304)
+
+var #54
+gpt2_LM/gpt2_LM/transformer_4/attn_heads/out_proj/kernel:0     (768, 768)
+tfgpt2lm_head_model_3/transformer/h_._4/attn/c_proj/weight:0     (768, 768)
+
+var #55
+gpt2_LM/gpt2_LM/transformer_4/attn_heads/out_proj/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._4/attn/c_proj/bias:0     (1, 768)
+
+var #56
+gpt2_LM/gpt2_LM/transformer_4/ln_2/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._4/ln_2/gamma:0     (768,)
+
+var #57
+gpt2_LM/gpt2_LM/transformer_4/ln_2/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._4/ln_2/beta:0     (768,)
+
+var #58
+gpt2_LM/gpt2_LM/transformer_4/ffn/ffn_inner/kernel:0     (768, 3072)
+tfgpt2lm_head_model_3/transformer/h_._4/mlp/c_fc/weight:0     (768, 3072)
+
+var #59
+gpt2_LM/gpt2_LM/transformer_4/ffn/ffn_inner/bias:0     (3072,)
+tfgpt2lm_head_model_3/transformer/h_._4/mlp/c_fc/bias:0     (1, 3072)
+
+var #60
+gpt2_LM/gpt2_LM/transformer_4/ffn/ffn_out/kernel:0     (3072, 768)
+tfgpt2lm_head_model_3/transformer/h_._4/mlp/c_proj/weight:0     (3072, 768)
+
+var #61
+gpt2_LM/gpt2_LM/transformer_4/ffn/ffn_out/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._4/mlp/c_proj/bias:0     (1, 768)
+
+var #62
+gpt2_LM/gpt2_LM/transformer_5/ln_1/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._5/ln_1/gamma:0     (768,)
+
+var #63
+gpt2_LM/gpt2_LM/transformer_5/ln_1/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._5/ln_1/beta:0     (768,)
+
+var #64
+gpt2_LM/gpt2_LM/transformer_5/attn_heads/W_qkv/kernel:0     (768, 2304)
+tfgpt2lm_head_model_3/transformer/h_._5/attn/c_attn/weight:0     (768, 2304)
+
+var #65
+gpt2_LM/gpt2_LM/transformer_5/attn_heads/W_qkv/bias:0     (2304,)
+tfgpt2lm_head_model_3/transformer/h_._5/attn/c_attn/bias:0     (1, 2304)
+
+var #66
+gpt2_LM/gpt2_LM/transformer_5/attn_heads/out_proj/kernel:0     (768, 768)
+tfgpt2lm_head_model_3/transformer/h_._5/attn/c_proj/weight:0     (768, 768)
+
+var #67
+gpt2_LM/gpt2_LM/transformer_5/attn_heads/out_proj/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._5/attn/c_proj/bias:0     (1, 768)
+
+var #68
+gpt2_LM/gpt2_LM/transformer_5/ln_2/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._5/ln_2/gamma:0     (768,)
+
+var #69
+gpt2_LM/gpt2_LM/transformer_5/ln_2/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._5/ln_2/beta:0     (768,)
+
+var #70
+gpt2_LM/gpt2_LM/transformer_5/ffn/ffn_inner/kernel:0     (768, 3072)
+tfgpt2lm_head_model_3/transformer/h_._5/mlp/c_fc/weight:0     (768, 3072)
+
+var #71
+gpt2_LM/gpt2_LM/transformer_5/ffn/ffn_inner/bias:0     (3072,)
+tfgpt2lm_head_model_3/transformer/h_._5/mlp/c_fc/bias:0     (1, 3072)
+
+var #72
+gpt2_LM/gpt2_LM/transformer_5/ffn/ffn_out/kernel:0     (3072, 768)
+tfgpt2lm_head_model_3/transformer/h_._5/mlp/c_proj/weight:0     (3072, 768)
+
+var #73
+gpt2_LM/gpt2_LM/transformer_5/ffn/ffn_out/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._5/mlp/c_proj/bias:0     (1, 768)
+
+var #74
+gpt2_LM/gpt2_LM/transformer_6/ln_1/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._6/ln_1/gamma:0     (768,)
+
+var #75
+gpt2_LM/gpt2_LM/transformer_6/ln_1/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._6/ln_1/beta:0     (768,)
+
+var #76
+gpt2_LM/gpt2_LM/transformer_6/attn_heads/W_qkv/kernel:0     (768, 2304)
+tfgpt2lm_head_model_3/transformer/h_._6/attn/c_attn/weight:0     (768, 2304)
+
+var #77
+gpt2_LM/gpt2_LM/transformer_6/attn_heads/W_qkv/bias:0     (2304,)
+tfgpt2lm_head_model_3/transformer/h_._6/attn/c_attn/bias:0     (1, 2304)
+
+var #78
+gpt2_LM/gpt2_LM/transformer_6/attn_heads/out_proj/kernel:0     (768, 768)
+tfgpt2lm_head_model_3/transformer/h_._6/attn/c_proj/weight:0     (768, 768)
+
+var #79
+gpt2_LM/gpt2_LM/transformer_6/attn_heads/out_proj/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._6/attn/c_proj/bias:0     (1, 768)
+
+var #80
+gpt2_LM/gpt2_LM/transformer_6/ln_2/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._6/ln_2/gamma:0     (768,)
+
+var #81
+gpt2_LM/gpt2_LM/transformer_6/ln_2/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._6/ln_2/beta:0     (768,)
+
+var #82
+gpt2_LM/gpt2_LM/transformer_6/ffn/ffn_inner/kernel:0     (768, 3072)
+tfgpt2lm_head_model_3/transformer/h_._6/mlp/c_fc/weight:0     (768, 3072)
+
+var #83
+gpt2_LM/gpt2_LM/transformer_6/ffn/ffn_inner/bias:0     (3072,)
+tfgpt2lm_head_model_3/transformer/h_._6/mlp/c_fc/bias:0     (1, 3072)
+
+var #84
+gpt2_LM/gpt2_LM/transformer_6/ffn/ffn_out/kernel:0     (3072, 768)
+tfgpt2lm_head_model_3/transformer/h_._6/mlp/c_proj/weight:0     (3072, 768)
+
+var #85
+gpt2_LM/gpt2_LM/transformer_6/ffn/ffn_out/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._6/mlp/c_proj/bias:0     (1, 768)
+
+var #86
+gpt2_LM/gpt2_LM/transformer_7/ln_1/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._7/ln_1/gamma:0     (768,)
+
+var #87
+gpt2_LM/gpt2_LM/transformer_7/ln_1/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._7/ln_1/beta:0     (768,)
+
+var #88
+gpt2_LM/gpt2_LM/transformer_7/attn_heads/W_qkv/kernel:0     (768, 2304)
+tfgpt2lm_head_model_3/transformer/h_._7/attn/c_attn/weight:0     (768, 2304)
+
+var #89
+gpt2_LM/gpt2_LM/transformer_7/attn_heads/W_qkv/bias:0     (2304,)
+tfgpt2lm_head_model_3/transformer/h_._7/attn/c_attn/bias:0     (1, 2304)
+
+var #90
+gpt2_LM/gpt2_LM/transformer_7/attn_heads/out_proj/kernel:0     (768, 768)
+tfgpt2lm_head_model_3/transformer/h_._7/attn/c_proj/weight:0     (768, 768)
+
+var #91
+gpt2_LM/gpt2_LM/transformer_7/attn_heads/out_proj/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._7/attn/c_proj/bias:0     (1, 768)
+
+var #92
+gpt2_LM/gpt2_LM/transformer_7/ln_2/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._7/ln_2/gamma:0     (768,)
+
+var #93
+gpt2_LM/gpt2_LM/transformer_7/ln_2/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._7/ln_2/beta:0     (768,)
+
+var #94
+gpt2_LM/gpt2_LM/transformer_7/ffn/ffn_inner/kernel:0     (768, 3072)
+tfgpt2lm_head_model_3/transformer/h_._7/mlp/c_fc/weight:0     (768, 3072)
+
+var #95
+gpt2_LM/gpt2_LM/transformer_7/ffn/ffn_inner/bias:0     (3072,)
+tfgpt2lm_head_model_3/transformer/h_._7/mlp/c_fc/bias:0     (1, 3072)
+
+var #96
+gpt2_LM/gpt2_LM/transformer_7/ffn/ffn_out/kernel:0     (3072, 768)
+tfgpt2lm_head_model_3/transformer/h_._7/mlp/c_proj/weight:0     (3072, 768)
+
+var #97
+gpt2_LM/gpt2_LM/transformer_7/ffn/ffn_out/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._7/mlp/c_proj/bias:0     (1, 768)
+
+var #98
+gpt2_LM/gpt2_LM/transformer_8/ln_1/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._8/ln_1/gamma:0     (768,)
+
+var #99
+gpt2_LM/gpt2_LM/transformer_8/ln_1/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._8/ln_1/beta:0     (768,)
+
+var #100
+gpt2_LM/gpt2_LM/transformer_8/attn_heads/W_qkv/kernel:0     (768, 2304)
+tfgpt2lm_head_model_3/transformer/h_._8/attn/c_attn/weight:0     (768, 2304)
+
+var #101
+gpt2_LM/gpt2_LM/transformer_8/attn_heads/W_qkv/bias:0     (2304,)
+tfgpt2lm_head_model_3/transformer/h_._8/attn/c_attn/bias:0     (1, 2304)
+
+var #102
+gpt2_LM/gpt2_LM/transformer_8/attn_heads/out_proj/kernel:0     (768, 768)
+tfgpt2lm_head_model_3/transformer/h_._8/attn/c_proj/weight:0     (768, 768)
+
+var #103
+gpt2_LM/gpt2_LM/transformer_8/attn_heads/out_proj/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._8/attn/c_proj/bias:0     (1, 768)
+
+var #104
+gpt2_LM/gpt2_LM/transformer_8/ln_2/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._8/ln_2/gamma:0     (768,)
+
+var #105
+gpt2_LM/gpt2_LM/transformer_8/ln_2/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._8/ln_2/beta:0     (768,)
+
+var #106
+gpt2_LM/gpt2_LM/transformer_8/ffn/ffn_inner/kernel:0     (768, 3072)
+tfgpt2lm_head_model_3/transformer/h_._8/mlp/c_fc/weight:0     (768, 3072)
+
+var #107
+gpt2_LM/gpt2_LM/transformer_8/ffn/ffn_inner/bias:0     (3072,)
+tfgpt2lm_head_model_3/transformer/h_._8/mlp/c_fc/bias:0     (1, 3072)
+
+var #108
+gpt2_LM/gpt2_LM/transformer_8/ffn/ffn_out/kernel:0     (3072, 768)
+tfgpt2lm_head_model_3/transformer/h_._8/mlp/c_proj/weight:0     (3072, 768)
+
+var #109
+gpt2_LM/gpt2_LM/transformer_8/ffn/ffn_out/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._8/mlp/c_proj/bias:0     (1, 768)
+
+var #110
+gpt2_LM/gpt2_LM/transformer_9/ln_1/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._9/ln_1/gamma:0     (768,)
+
+var #111
+gpt2_LM/gpt2_LM/transformer_9/ln_1/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._9/ln_1/beta:0     (768,)
+
+var #112
+gpt2_LM/gpt2_LM/transformer_9/attn_heads/W_qkv/kernel:0     (768, 2304)
+tfgpt2lm_head_model_3/transformer/h_._9/attn/c_attn/weight:0     (768, 2304)
+
+var #113
+gpt2_LM/gpt2_LM/transformer_9/attn_heads/W_qkv/bias:0     (2304,)
+tfgpt2lm_head_model_3/transformer/h_._9/attn/c_attn/bias:0     (1, 2304)
+
+var #114
+gpt2_LM/gpt2_LM/transformer_9/attn_heads/out_proj/kernel:0     (768, 768)
+tfgpt2lm_head_model_3/transformer/h_._9/attn/c_proj/weight:0     (768, 768)
+
+var #115
+gpt2_LM/gpt2_LM/transformer_9/attn_heads/out_proj/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._9/attn/c_proj/bias:0     (1, 768)
+
+var #116
+gpt2_LM/gpt2_LM/transformer_9/ln_2/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._9/ln_2/gamma:0     (768,)
+
+var #117
+gpt2_LM/gpt2_LM/transformer_9/ln_2/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._9/ln_2/beta:0     (768,)
+
+var #118
+gpt2_LM/gpt2_LM/transformer_9/ffn/ffn_inner/kernel:0     (768, 3072)
+tfgpt2lm_head_model_3/transformer/h_._9/mlp/c_fc/weight:0     (768, 3072)
+
+var #119
+gpt2_LM/gpt2_LM/transformer_9/ffn/ffn_inner/bias:0     (3072,)
+tfgpt2lm_head_model_3/transformer/h_._9/mlp/c_fc/bias:0     (1, 3072)
+
+var #120
+gpt2_LM/gpt2_LM/transformer_9/ffn/ffn_out/kernel:0     (3072, 768)
+tfgpt2lm_head_model_3/transformer/h_._9/mlp/c_proj/weight:0     (3072, 768)
+
+var #121
+gpt2_LM/gpt2_LM/transformer_9/ffn/ffn_out/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._9/mlp/c_proj/bias:0     (1, 768)
+
+var #122
+gpt2_LM/gpt2_LM/transformer_10/ln_1/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._10/ln_1/gamma:0     (768,)
+
+var #123
+gpt2_LM/gpt2_LM/transformer_10/ln_1/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._10/ln_1/beta:0     (768,)
+
+var #124
+gpt2_LM/gpt2_LM/transformer_10/attn_heads/W_qkv/kernel:0     (768, 2304)
+tfgpt2lm_head_model_3/transformer/h_._10/attn/c_attn/weight:0     (768, 2304)
+
+var #125
+gpt2_LM/gpt2_LM/transformer_10/attn_heads/W_qkv/bias:0     (2304,)
+tfgpt2lm_head_model_3/transformer/h_._10/attn/c_attn/bias:0     (1, 2304)
+
+var #126
+gpt2_LM/gpt2_LM/transformer_10/attn_heads/out_proj/kernel:0     (768, 768)
+tfgpt2lm_head_model_3/transformer/h_._10/attn/c_proj/weight:0     (768, 768)
+
+var #127
+gpt2_LM/gpt2_LM/transformer_10/attn_heads/out_proj/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._10/attn/c_proj/bias:0     (1, 768)
+
+var #128
+gpt2_LM/gpt2_LM/transformer_10/ln_2/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._10/ln_2/gamma:0     (768,)
+
+var #129
+gpt2_LM/gpt2_LM/transformer_10/ln_2/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._10/ln_2/beta:0     (768,)
+
+var #130
+gpt2_LM/gpt2_LM/transformer_10/ffn/ffn_inner/kernel:0     (768, 3072)
+tfgpt2lm_head_model_3/transformer/h_._10/mlp/c_fc/weight:0     (768, 3072)
+
+var #131
+gpt2_LM/gpt2_LM/transformer_10/ffn/ffn_inner/bias:0     (3072,)
+tfgpt2lm_head_model_3/transformer/h_._10/mlp/c_fc/bias:0     (1, 3072)
+
+var #132
+gpt2_LM/gpt2_LM/transformer_10/ffn/ffn_out/kernel:0     (3072, 768)
+tfgpt2lm_head_model_3/transformer/h_._10/mlp/c_proj/weight:0     (3072, 768)
+
+var #133
+gpt2_LM/gpt2_LM/transformer_10/ffn/ffn_out/bias:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._10/mlp/c_proj/bias:0     (1, 768)
+
+var #134
+gpt2_LM/gpt2_LM/transformer_11/ln_1/gamma:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._11/ln_1/gamma:0     (768,)
+
+var #135
+gpt2_LM/gpt2_LM/transformer_11/ln_1/beta:0     (768,)
+tfgpt2lm_head_model_3/transformer/h_._11/ln_1/beta:0     (768,)
+
+var #136
+gpt2_LM/gpt2_LM/transformer_11/attn_heads/W_qkv/kernel:0     (768, 2304)
+tfgpt2lm_head_model_3/transformer/h_._11/attn/c_attn/weight:0     (768, 2304)
