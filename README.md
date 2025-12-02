@@ -45,7 +45,7 @@ Therefore, my implementation prioritized information based on the following hier
 
 ## 3. Source code
 
-The files for this project are in the **/src** directory and are listed in the table below.
+The files for this project are in the */src* directory and are listed in the table below.
 
 | Filename                |  Contents                                                                |
 |-------------------------|--------------------------------------------------------------------------|
@@ -60,7 +60,9 @@ The original Transformer paper includes the following diagram of the model archi
 
 ![](pictures/transformer_architecture.JPG)
 
-The model comprises an encoder and a decoder that are built with stacks of multi-head attention blocks.
+The model comprises an encoder and a decoder that are built with stacks of modules referred to as *layers*.
+
+As shown in the figure, a layer contains multi-head attention blocks, a feed-forward network and layer normalizations.
 
 Diagrams of the attention head and multi-head attention block are also provided in the same paper:
 
@@ -71,6 +73,7 @@ The GPT paper contains the following diagram of the GPT model architecture:
 
 ![](pictures/GPT_architecture.JPG)
 
+
 In the original transformer-decoder architecture, the layer is built with 3 sub-layers:
 - Masked multi-head attention, layer norm
 - Encoder-decoder cross-attention, layer norm
@@ -79,8 +82,6 @@ In the original transformer-decoder architecture, the layer is built with 3 sub-
 Because it is a decoder-only architecture, the GPT model requires only 2 sub-layers:
 - Masked multi-head attention, layer norm
 - Feed-forward network, layer norm.
-
-In the original Transformer paper, the term 'layer' refers to a transformer block (a unit containing attention and feed-forward sub-layers). The model 'hidden size' refers to the size of the embeddings. I used the same terminology.
 
 
 ## 5. GPT-2 model layers and architecture diagram
@@ -214,7 +215,7 @@ Although not mentioned in any of the three papers, the weights shared between E 
 
 Using the research papers and the findings above, implementing the model in Tensorflow was straightforward.
 
-The model is in file **src/gpt2_model.py**.
+The model is in file *src/gpt2_model.py*.
 
 I followed the implementation of the Wq, Wk and Wv matrices described in section '3.2.1 Scaled Dot-Product Attention' of the Transformer paper:
 
@@ -233,25 +234,25 @@ The output of this function for the smallest model size is in file *model_vars.t
 
 Running this function for all the model sizes in the GPT-2 paper gave the following results.
 
-| GPT-2 paper   | My model    |
-|---------------|-------------|
-| 117M          |   124M      |
-| 345M          |   355M      |
-| 762M          |   774M      |
-| 1542M         |  1542M      |
+| GPT-2 paper   | My model                  |
+|---------------|---------------------------|
+| 117M          |   124,439,808 ~ 124M      |
+| 345M          |   354,823,168 ~ 355M      |
+| 762M          |   774,030,080 ~ 774M      |
+| 1542M         |  1,558,811,200 ~ 1.56B    |
 
-The first two model sizes are different from the numbers given in the GPT-2 paper.
+My model sizes are different from the numbers given in the GPT-2 paper.
 
 Here I had to do some research as I could not find any explanation for these differences. I found out from different sources that OpenAI's numbers actually are inaccurate. Mine are correct.
 
-In the code, I used the names '124M' and '355M'for the first two models, which correspond to the accurate sizes of the model.
+To avoid any confusion, I used the names '124M', '355M', '774M' and '1.56B' in my code. These names are aligned with the accurate model sizes.
 
 
 ## 11. Loading OpenAI's pretrained weights
 
-OpenAI's weights for GPT-2 models can be obtained from multiple sources. I used the **transformers** package developed by Hugging Face.
+OpenAI's weights for GPT-2 models can be obtained from multiple sources. I used the *transformers* package developed by Hugging Face.
 
-Keras stores the list of trainable variables of a model in its **trainable_variables** attribute. The simplest approach to transfer the weights from a source model to a target model is to ensure that their lists of trainable variables match one-to-one. Then, a simple loop through the variable lists is sufficient to read the weights from the source model and write them to the target model.
+Keras stores the list of trainable variables of a model in its *trainable_variables* attribute. The simplest approach to transfer the weights from a source model to a target model is to ensure that their lists of trainable variables match one-to-one. Then, a simple loop through the variable lists is sufficient to read the weights from the source model and write them to the target model.
 
 There are two conditions to make this possible:
 1. Both models must share the same organization in layers and sub-layers.
