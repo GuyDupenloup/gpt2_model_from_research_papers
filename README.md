@@ -239,7 +239,7 @@ Running this function for all the model sizes in the GPT-2 paper gave the follow
 | 117M          |   124,439,808 ~ 124M      |
 | 345M          |   354,823,168 ~ 355M      |
 | 762M          |   774,030,080 ~ 774M      |
-| 1542M         |  1,558,811,200 ~ 1.56B    |
+| 1542M         |  1,557,611,200 ~ 1.56B    |
 
 My model sizes are different from the numbers given in the GPT-2 paper.
 
