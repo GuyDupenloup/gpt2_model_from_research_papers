@@ -33,7 +33,7 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         self.output_proj = tf.keras.layers.Dense(d_model, name='out_proj')
 
 
-    def call(self, input, training=False):
+    def call(self, input):
 
         # Get the batch size
         batch = tf.shape(input)[0]
@@ -96,7 +96,7 @@ class GPT2FeedForwardNetwork(tf.keras.layers.Layer):
         )
         self.ff_out = tf.keras.layers.Dense(d_model, name='ffn_out')
 
-    def call(self, input, training=False):
+    def call(self, input):
         x = self.ff_inner(input)
         x = self.ff_out(x)
         return x
@@ -120,19 +120,19 @@ class GPT2Transformer(tf.keras.layers.Layer):
         self.dropout_2 = tf.keras.layers.Dropout(rate=dropout_rate, name='drop_2')
 
 
-    def call(self, input, training=False):
+    def call(self, input, training=None):
 
         # First sub-layer
-        x1 = self.layer_norm_1(input)
-        x1 = self.attn_heads(x1, training=training)
+        x1 = self.layer_norm_1(input, training=training)
+        x1 = self.attn_heads(x1)
         x1 = self.dropout_1(x1, training=training)
 
         # First residual connection
         x2 = x1 + input
 
         # Second sub-layer
-        x3 = self.layer_norm_2(x2)
-        x3 = self.ffn(x3, training=training)
+        x3 = self.layer_norm_2(x2, training=training)
+        x3 = self.ffn(x3)
         x3 = self.dropout_2(x3, training=training)
 
         # Second residual connection
@@ -204,7 +204,7 @@ class GPT2Model(tf.keras.models.Model):
         self.positions = tf.range(start=0, limit=seq_len, delta=1)
 
 
-    def call(self, inputs, training=False):
+    def call(self, inputs, training=None):
         # Embeddings
         token_embed = self.token_embed_layer(inputs)
         position_embed = self.position_embed_layer(self.positions)
@@ -215,7 +215,7 @@ class GPT2Model(tf.keras.models.Model):
         for transformer in self.transformer_layers:
             x = transformer(x, training=training)
 
-        output = self.layer_norm_final(x)
+        output = self.layer_norm_final(x, training=training)
 
         return output
 
@@ -236,12 +236,12 @@ class GPT2LanguageModel(tf.keras.models.Model):
         self.gpt2_model = GPT2Model(model_config, dropout_rate=dropout_rate, name=name)
 
 
-    def call(self, inputs):
+    def call(self, inputs, training=None):
         """
         Forward pass through the GPT2 language model.
         """
 
-        gpt2_output = self.gpt2_model(inputs)
+        gpt2_output = self.gpt2_model(inputs, training=training)
 
         # Output linear layer that projects hidden state representations to vocabulary.
         # Weights of the projection matrix are shared with the token embedding matrix.
