@@ -104,8 +104,3 @@ def transfer_pretrained_weights(model, verbose=True):
 
         assert weights.shape == hf_weights.shape
         var.assign(hf_weights)
-
-
-model = create_gpt2_language_model('124M')
-print_trainable_variables(model)
-transfer_pretrained_weights(model, verbose=True)
