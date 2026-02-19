@@ -43,7 +43,7 @@ Therefore, my implementation prioritized information based on the following hier
 3. Transformer paper
 
 
-## 3. Source code
+## 3. Source code and Python packages
 
 The files for this project are in the */src* directory and are listed in the table below.
 
@@ -53,6 +53,7 @@ The files for this project are in the */src* directory and are listed in the tab
 | model_utils.py          |  Create a model, print trainable variables, transfer pretrained weights from Hugging Face model |
 | model_vars.txt          |  Output of script *model_utils.py*                                       |
 
+See file *requirements.txt* for the list of Python packages I used.
 
 ## 4. GPT-2 decoder-only architecture
 
