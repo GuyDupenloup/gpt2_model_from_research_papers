@@ -24,7 +24,30 @@ The goal of this project was to construct the model using only these three resea
     ["Language Models are Unsupervised Multitask Learners."](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf?utm_source=chatgpt.com)
 
 
-### 2. Methodology
+## 2. Source code and Python packages
+
+The files for this project are in the */src* directory and are listed in the table below.
+
+```
+   src
+    |     
+    ├── gpt2_model.py              # GPT-2 language model
+    |
+    ├── model_utils.py             # Utilities (create model, print model variables)
+    |
+    ├── gen_text.py                # Generate a text
+    |
+    ├── test.py                    # Create a model and generate a text from a prompt
+    |
+    ├── compare_vars.py            # Compare trainable variables to Hugging Face models
+    |
+    └── model_vars.txt             # Output of script compare_vars.py 
+```
+
+See file *requirements.txt* for the list of Python packages I used.
+
+
+### 3. Methodology
 
 In the section entitled 'Model Specifications' of the GPT paper, the authors state:
 
@@ -42,19 +65,6 @@ Therefore, my implementation prioritized information based on the following hier
 2. GPT paper
 3. Transformer paper
 
-
-## 3. Source code and Python packages
-
-The files for this project are in the */src* directory and are listed in the table below.
-
-| Filename                |  Contents                                                                |
-|-------------------------|--------------------------------------------------------------------------|
-| gpt2_model.py           |  GPT-2 model                                                             |
-| model_utils.py          |  Utilities (model creation, model summary)  |
-| test.py                 | Create a pretrained GPT2 model, and print model's variables |
-| model_vars.txt          |  Output of script *model_utils
-
-See file *requirements.txt* for the list of Python packages I used.
 
 ## 4. GPT-2 decoder-only architecture
 
@@ -219,6 +229,8 @@ Using the research papers and the findings above, implementing the model in Tens
 
 The model is in file *src/gpt2_model.py*.
 
+### 9.1 Query/Key/Value matrices
+
 I followed the implementation of the Wq, Wk and Wv matrices described in section '3.2.1 Scaled Dot-Product Attention' of the Transformer paper:
 
     "In practice, we compute the attention function on a set of queries simultaneously,
@@ -226,6 +238,9 @@ I followed the implementation of the Wq, Wk and Wv matrices described in section
     into matrices K and V."
 
 Like in the Transformer paper, I concatenated the Wq, Wk and Wv matrices in a single matrix rather than using 3 distinct matrices. This makes the computation of Q, K and V more efficient (only one matrix product).
+
+### 9.2 Attention mask
+
 
 
 ## 10. Model parameter counts
@@ -267,7 +282,92 @@ There is one difference, though. Bias variables in the Hugging Face model have s
 For the sake of simplicity, I stuck with Keras standard layers. When transferring the weights, I just had to reshape the bias layers in the Hugging Face model from (1, N) to (N,).
 
 
-## 12. Conclusion
+## 12. Text generation
+
+### 12.1 Next-token selection methods
+
+### 12.2 Model output examples
+
+
+>> Prompt:
+The secret to live a happy life is
+
+Greedy
+------
+
+>> Output text:
+The secret to live a happy life is to be able to live with your family and friends.
+
+The best way to live a happy life is to be able to live with your family and friends.
+
+The best way to live a happy life is to be able to live with
+
+
+Temperature = 0.8
+-----------------
+The secret to live a happy life is to be able to look back on your childhood, and see how things've changed in your life, and how things have changed over time. I have no doubt, using my stories as a base for my own personal development, my own journey, these
+
+
+Temperature = 1.2
+-----------------
+
+The secret to live a happy life is cultivating an empty ego. As Durr Pai teaches, both Logically Probable Real states and synthetic self-donations provide a means to puke while in these necessities making good money:
+
+Often they will empower one through the power of consideration
+
+
+Temperature = 0.8, top-k = 40
+-----------------------------
+
+The secret to live a happy life is getting out of the shadows, even when you're not in a situation where you look like a normal human.
+
+Advertisement
+
+The real problem is that if you're a child, your family's not going to be able to care for you
+
+Temperature = 0.8, top-k = 40
+-----------------------------
+The secret to live a happy life is to live with your family members, your friends, and your love. We have some of the best friends we know and some of the least, but the good news is that we love you and care for you. You have always been so strong.
+
+
+Temperature = 1.0, top-k = 40
+-----------------------------
+The secret to live a happy life is to have a strong, strong spirit," said the pope.
+
+In a speech delivered on the occasion of the 70th anniversary of the birth of Jesus, Joseph Stalin said the goal is for mankind to live in a very different world because we would
+
+
+Temperature = 1.0, top-k = 20
+-----------------------------
+The secret to live a happy life is a long-lived relationship," she said. "I'm just going to be here for the people to live with. We're not going to be sitting around waiting for you."
+
+A recent book published in the US by her son, a
+
+Temperature = 0.8, top-k = 30
+-----------------------------
+The secret to live a happy life is to live in the world. So what you might not know about life is that you may not know your way around it—even if you do.
+
+When you're in the middle of your life, you may be in a situation that could
+
+
+Temperature = 0.8, top-k = 20
+-----------------------------
+The secret to live a happy life is to not be afraid to give something away.
+
+As a former professional footballer I have been given the opportunity to prove that I am capable of doing something. But in spite of this I am still not quite ready to do that. There is so
+
+
+Temperature = 0.8, top-p = 0.9
+------------------------------
+The secret to live a happy life is finding someone to support you.
+
+~XxX~
+
+This is a fun blog to make fun of people for making fun of each other. It's so fun to know that your friends will be happy and happy and happy to be
+
+
+
+## 13. Conclusion
 
 This concludes my GPT-2 model creation project.
 
