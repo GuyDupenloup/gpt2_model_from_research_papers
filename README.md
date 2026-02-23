@@ -50,8 +50,9 @@ The files for this project are in the */src* directory and are listed in the tab
 | Filename                |  Contents                                                                |
 |-------------------------|--------------------------------------------------------------------------|
 | gpt2_model.py           |  GPT-2 model                                                             |
-| model_utils.py          |  Create a model, print trainable variables, transfer pretrained weights from Hugging Face model |
-| model_vars.txt          |  Output of script *model_utils.py*                                       |
+| model_utils.py          |  Utilities (model creation, model summary)  |
+| test.py                 | Create a pretrained GPT2 model, and print model's variables |
+| model_vars.txt          |  Output of script *model_utils
 
 See file *requirements.txt* for the list of Python packages I used.
 
