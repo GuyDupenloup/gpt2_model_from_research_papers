@@ -5,7 +5,6 @@
 from model_utils import create_gpt2_language_model, print_model_variables
 from gen_text import generate_text
 
-
 model = create_gpt2_language_model('124M')
 print_model_variables(model)
 
