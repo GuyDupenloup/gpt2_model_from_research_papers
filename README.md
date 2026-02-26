@@ -58,14 +58,14 @@ To get started, you can run script *test.py* in the */src* directory. It instant
 In the section entitled "Model Specifications" of the GPT paper, the authors state:
 
 ```
-    "Our model largely follows the original transformer work. We trained a 12-layer decoder-only
-    transformer with masked self-attention heads (768 dimensional states and 12 attention heads)."
+    Our model largely follows the original transformer work. We trained a 12-layer decoder-only
+    transformer with masked self-attention heads (768 dimensional states and 12 attention heads).
 ```
 
 And in section "2.3 Model" of the GPT-2 paper:
 ```
-    "We use a Transformer (Vaswani et al., 2017) based architecture for our LMs. The model largely
-    follows the details of the OpenAI GPT model (Radford et al., 2018) with a few modifications."
+    We use a Transformer (Vaswani et al., 2017) based architecture for our LMs. The model largely
+    follows the details of the OpenAI GPT model (Radford et al., 2018) with a few modifications.
 ```
 
 Therefore, my implementation prioritized information based on the following hierarchy to ensure alignment with the latest architecture:
@@ -112,7 +112,7 @@ Because it is a decoder-only architecture, the GPT model requires only 2 sub-lay
 In the "Model Specifications" section of the GPT paper:
 
 ```
-    "We used learned position embeddings instead of the sinusoidal version proposed in the original work."
+    We used learned position embeddings instead of the sinusoidal version proposed in the original work.
 ```
 
 The GPT-2 paper makes no mention of the type of embeddings they used to capture sequence information, so I assumed that it also uses position embeddings.
@@ -120,8 +120,8 @@ The GPT-2 paper makes no mention of the type of embeddings they used to capture 
 The vocabulary size and context length are given in section "2.3 Model" of the GPT-2 paper:
 
 ```
-    "The vocabulary is expanded to 50,257. We also increase the context size
-    from 512 to 1024 tokens and a larger batch size of 512 is used."
+    The vocabulary is expanded to 50,257. We also increase the context size
+    from 512 to 1024 tokens and a larger batch size of 512 is used.
 ```
 
 ### Layer normalization
@@ -129,9 +129,9 @@ The vocabulary size and context length are given in section "2.3 Model" of the G
 In section "2.3 Model" of the GPT-2 paper:
 
 ```
-    "Layer normalization (Ba et al., 2016) was moved to the input of each sub-block, similar to 
+    Layer normalization (Ba et al., 2016) was moved to the input of each sub-block, similar to 
     a pre-activation residual network (He et al., 2016) and an additional layer normalization 
-    was added after the final self-attention block."
+    was added after the final self-attention block.
 ```
 
 Layer normalization to the input of each sub-block is useful to stabilize training, as described in the paper by He et al. that is cited.
@@ -142,10 +142,10 @@ Layer normalization to the input of each sub-block is useful to stabilize traini
 In Section "5.4 Regularization" of the Transformer paper:
 
 ```
-    "We apply dropout to the output of each sub-layer, before it is added to the sub-layer 
+    We apply dropout to the output of each sub-layer, before it is added to the sub-layer 
     input and normalized. In addition, we apply dropout to the sums of the embeddings and 
     the positional encodings in both the encoder and decoder stacks. For the base model,
-    we use a rate of P_drop=0.1."
+    we use a rate of P_drop=0.1.
 ```
 
 As neither the GPT nor GPT-2 papers mention dropout, I followed the same configuration as the original Transformer (same layer positions).
@@ -173,8 +173,8 @@ In this table, *n_layers* is the number of transformer blocks and *d_model* is t
 The table does not provide the size of the head output and the number of heads in parallel in the multi-head attention block. However, in section "3.2.2 Multi-Head Attention" of the Transformer paper, the authors specify:
 
 ```
-   "We employ h=8 parallel attention layers, or heads. For all models, we use d_model=512 and 
-    d_k = d_v = d_model/h = 64"
+   We employ h=8 parallel attention layers, or heads. For all models, we use d_model=512 and 
+    d_k = d_v = d_model/h = 64
 ```
 
 d_k = d_v is the size of the Key and Value matrices (although not mentioned, d_q is the same size).
@@ -210,8 +210,8 @@ In section "3.3 Position-wise Feed-Forward Networks" of the Transformer paper:
 Further in the same section:
 
 ```
-    "The dimensionality of input and output is d_model = 512, and the inner-layer 
-    has dimensionality dff = 2048."
+    The dimensionality of input and output is d_model = 512, and the inner-layer 
+    has dimensionality dff = 2048.
 ```
 
 Thus, the feed-forward network of the original transformer has 2 layers, and the size of the inner layer is 4x the size of the output layer.
@@ -219,9 +219,9 @@ Thus, the feed-forward network of the original transformer has 2 layers, and the
 In section "Model specifications" of the GPT paper:
 
 ```
-    "We trained a 12-layer decoder-only transformer with masked self-attention heads 
+    We trained a 12-layer decoder-only transformer with masked self-attention heads 
     (768 dimensional states and 12 attention heads). For the position-wise feed-forward 
-    networks, we used 3072 dimensional inner states."
+    networks, we used 3072 dimensional inner states.
 ```
 
 As in the original transformer, the inner layer's size is 4x the size of the output layer. As there is no mention of it in the GPT-2 paper, I assumed that this 4x ratio is valid for all the GPT-2 model sizes.
@@ -229,7 +229,7 @@ As in the original transformer, the inner layer's size is 4x the size of the out
 Also mentioned in the same section of the GPT paper:
 
 ```
-    "For the activation function, we used the Gaussian Error Linear Unit (GELU)."
+    For the activation function, we used the Gaussian Error Linear Unit (GELU).
 ```
 
 The GELU yields smoother gradients than the ReLU. As it was not mentioned in the GPT-2 paper, I assumed that the GELU activation function was also used in the GPT-2 model.
@@ -240,12 +240,12 @@ The GELU yields smoother gradients than the ReLU. As it was not mentioned in the
 The Transformer paper describes the model output linear layer in section "3.4: Embeddings and Softmax":
 
 ```
-    "Similarly to other sequence transduction models, we use learned embeddings 
+    Similarly to other sequence transduction models, we use learned embeddings 
     to convert the input tokens and output tokens to vectors of dimension d_model.
     We also use the usual learned linear transformation and softmax function 
     to convert the decoder output to predicted next-token probabilities. In our model,
     we share the same weight matrix between the two embedding layers and the pre-softmax 
-    linear transformation, similar to [30]."
+    linear transformation, similar to [30].
 ```
 
 The GPT paper describes the same linear layer in section "3.2 Supervised fine-tuning". The GPT-2 paper does not mention it, so I assumed that it is the same as in the Transformer and GPT papers.
@@ -261,9 +261,9 @@ Using the research papers and the findings above, implementing the model in Tens
  I concatenated the Wq, Wk and Wv matrices in a single matrix to make the computation of Q, K and V more efficient (only one matrix product), as described in section "3.2.1 Scaled Dot-Product Attention" of the Transformer paper:
 
 ```
-    "In practice, we compute the attention function on a set of queries simultaneously,
+    In practice, we compute the attention function on a set of queries simultaneously,
     packed together into a matrix Q. The keys and values are also packed together 
-    into matrices K and V."
+    into matrices K and V.
 ```
 
 Although it was not mentioned in the paper, I implemented an *attention mask* to avoid that the model attends to padding tokens in the input sequence. Because the model takes tensors of fixed dimensions as inputs, padding tokens are required when running through the model a batch of input sequences that have different lengths. Implementation was straightforward using the same mechanism as for causal inference.
@@ -282,7 +282,7 @@ Running this function for all the model sizes in the GPT-2 paper gave the result
 | 762M          |   774,030,080 ~ 774M      |
 | 1542M         |  1,557,611,200 ~ 1.56B    |
 
-My model sizes are different from the numbers given in the GPT-2 paper. I had to do some research as I could not find any explanation. It turns out that my numbers are accurate and the community standardized on them after the publication of the GPT-2 paper. To avoid any confusion, I did the same I used the names '124M', '355M', '774M' and '1.56B' in my code.
+My model sizes are different from the numbers given in the GPT-2 paper. I had to do some research as I could not find any explanation. It turns out that my numbers are accurate and the community standardized on them after the publication of the GPT-2 paper. To avoid any confusion, I did the same and used the names '124M', '355M', '774M' and '1.56B' in my code.
 
 ## 11. Loading OpenAI's pretrained weights
 
