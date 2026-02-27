@@ -290,18 +290,15 @@ OpenAI's weights for GPT-2 models can be obtained from multiple sources. I used 
 
 Keras stores the list of trainable variables of a model in its *trainable_variables* attribute. Transferring the weights from a source model to a target model is trivial if their lists of trainable variables match one-to-one, which requires the two models to share the same organization in layers and sub-layers.
 
-File *model_vars.txt* contains a one-to-one comparison of the trainable variables of my '124M' model and the corresponding Hugging Face model. Although they have different names, all variables align. Hugging Face obviously followed the model architecture specified in the research papers, just like I did.
+File *model_vars.txt* contains a one-to-one comparison of the trainable variables of my '124M' model and the corresponding Hugging Face model. Although they have different names, all the variables align. Hugging Face obviously followed the model architecture specified in the research papers, just like I did.
 
 Therefore, a simple loop through trainable variables was enough to transfer the Hugging Face weights to my model.
 
-## 12. Text generation
+## 12. Generating responses to prompts
 
-I implemented several methods to select the next token when generating text from a prompt:
+I implemented four methods to select the next token when generating text from a prompt: greedy, temperature scaling, top-k sampling, and top-p (nucleus) sampling.
 
-- **greedy**: The token with the largest logit is selected (deterministic).
-- **temperature**: Logits scaled by temperature are converted to probabilities and a token is sampled from their distribution.
-- **top-k**: Only the top-k tokens are considered and a token is sampled from their distribution.
-- **top-p**: Tokens are sorted by probability and the smallest set of tokens whose cumulative probability sum is greater than or equal to *top-p* are kept. Then, a token is sampled from this nucleus.
+A script called *test.py* is available to create models and test their behavior. You can modify this script to try your own prompts, and play with the next-token selection parameters to get more conservative or creative answers.
 
 The table below shows a few examples of model outputs obtained with the following setup:
 
