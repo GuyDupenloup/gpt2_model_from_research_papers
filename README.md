@@ -307,9 +307,10 @@ The table below shows a few examples of model outputs obtained with the followin
 
 |  Next-token sampling method   |     Model output                           |
 |-------------------------|--------------------------------------------|
+|  no pretrained weights, greedy | The secret to living a happy life isBeer覚醒18 reson modemofi demonstrated disag 46 Gamb domain spoon reappCentral435 presentsforth nodes Additionallynsizzlenuclearreading?!" simplified EPSDynamic filmmakers Mist Brune king CBO extension PricingBytes DNua simplifiedjection backersacists alternateMTreeesthesiatariansdifferent invalid flagship farmer |
 |  greedy                 |  The secret to living a happy life is to be able to live with your family and friends. The best way to live a happy life is to be able to live with your family and friends. The best way to live a happy life is to be able to live with  |
-|  temperature=0.8      | The secret to living a happy life is to be able to look back on your childhood, and see how things've changed in your life, and how things have changed over time. I have no doubt, using my stories as a base for my own personal development, my own journey, these  |
-|  temperature=1.5  |  The secret to living a happy life is to have a strong, strong spirit," said the pope. In a speech delivered on the occasion of the 70th anniversary of the birth of Jesus, Joseph Stalin said the goal is for mankind to live in a very different world because we would  |
+|  temperature=0.8        | The secret to living a happy life is to be able to look back on your childhood, and see how things've changed in your life, and how things have changed over time. I have no doubt, using my stories as a base for my own personal development, my own journey, these  |
+|  temperature=1.5        |  The secret to living a happy life is to have a strong, strong spirit," said the pope. In a speech delivered on the occasion of the 70th anniversary of the birth of Jesus, Joseph Stalin said the goal is for mankind to live in a very different world because we would  |
 |  temperature=0.8, top-k=40  | The secret to living a happy life is to live with your family members, your friends, and your love. We have some of the best friends we know and some of the least, but the good news is that we love you and care for you. You have always been so strong.  |
 
 

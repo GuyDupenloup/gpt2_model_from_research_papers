@@ -13,12 +13,16 @@ def get_gpt2_model_config(model_size):
     Gets model configuration parameters for each of OpenAI's model sizes.
     """
     model_configs = {
-         '124M': {'vocab_size': 50257,  'max_seq_len': 1024, 'd_model': 768,  'n_layers': 12, 'n_heads': 12},
-         '355M': {'vocab_size': 50257,  'max_seq_len': 1024, 'd_model': 1024, 'n_layers': 24, 'n_heads': 16},
-         '774M': {'vocab_size': 50257,  'max_seq_len': 1024, 'd_model': 1280, 'n_layers': 36, 'n_heads': 20},
-        '1.56B': {'vocab_size': 50257,  'max_seq_len': 1024, 'd_model': 1600, 'n_layers': 48, 'n_heads': 25}
+         '124M': {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 768,  'n_layers': 12, 'n_heads': 12},
+         '355M': {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1024, 'n_layers': 24, 'n_heads': 16},
+         '774M': {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1280, 'n_layers': 36, 'n_heads': 20},
+        '1.56B': {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1600, 'n_layers': 48, 'n_heads': 25}
     }
-    assert model_size in model_configs
+
+    supported_sizes = list(model_configs.keys())
+    if model_size not in supported_sizes:
+        raise ValueError(f"Supported model sizes are {supported_sizes}. Received '{model_size}'")
+
     config = model_configs[model_size]
     config['size'] = model_size
 
@@ -66,11 +70,11 @@ def create_gpt2_language_model(model_size, dropout_rate=0., name='gpt2_lm'):
     )
 
     # Build the model using dummy inputs
-    max_seq_len = model_config['max_seq_len']
+    seq_len = model_config['seq_len']
     vocab_size = model_config['vocab_size']
     dummy_input = {
-        'input_ids': tf.random.uniform((1, max_seq_len), minval=0, maxval=vocab_size, dtype=tf.int32),
-        'attention_mask': tf.random.uniform((1, max_seq_len), minval=0, maxval=2, dtype=tf.int32)
+        'input_ids': tf.random.uniform((1, seq_len), minval=0, maxval=vocab_size, dtype=tf.int32),
+        'attention_mask': tf.random.uniform((1, seq_len), minval=0, maxval=2, dtype=tf.int32)
     }
     _ = model(dummy_input)
 

@@ -8,11 +8,12 @@ class MultiHeadAttention(tf.keras.layers.Layer):
     Multi-head self-attention mechanism.
     Implements causal (autoregressive) attention with configurable number of heads.
     """
-    def __init__(self, d_model, n_heads, name=None, **kwargs):
+    def __init__(self, seq_len, d_model, n_heads, name=None, **kwargs):
         super().__init__(name=name, **kwargs)
 
         assert d_model % n_heads == 0, "d_model must be divisible by n_heads"
 
+        self.seq_len = seq_len
         self.d_model = d_model
         self.d_head = d_model // n_heads
         self.n_heads = n_heads
@@ -26,12 +27,15 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         # Output projection matrix
         self.output_proj = tf.keras.layers.Dense(d_model, name='out_proj')
 
-
+        self.causal_mask = tf.linalg.band_part(
+            tf.ones((self.seq_len, self.seq_len), dtype=tf.bool), -1, 0
+        )
+        
+        
     def call(self, inputs, attention_mask):
 
         # Get the batch size
         batch = tf.shape(inputs)[0]
-        seq_len = tf.shape(inputs)[1]
 
         # Multiply inputs by query/key/value weight matrices
         QKV = self.W_qkv(inputs)
@@ -41,9 +45,9 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         Q, K, V = tf.split(QKV, num_or_size_splits=3, axis=-1)
 
         # d_model = d_head * n_heads
-        Q = tf.reshape(Q, (batch, seq_len, self.n_heads, self.d_head))
-        K = tf.reshape(K, (batch, seq_len, self.n_heads, self.d_head))
-        V = tf.reshape(V, (batch, seq_len, self.n_heads, self.d_head))
+        Q = tf.reshape(Q, (batch, self.seq_len, self.n_heads, self.d_head))
+        K = tf.reshape(K, (batch, self.seq_len, self.n_heads, self.d_head))
+        V = tf.reshape(V, (batch, self.seq_len, self.n_heads, self.d_head))
 
         # (batch, seq_len, n_heads, d_head) -> (batch, n_heads, seq_len, d_head)
         Q = tf.transpose(Q, perm=(0, 2, 1, 3))
@@ -61,12 +65,7 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         attn_mask = tf.cast(attention_mask, tf.bool)
         scores = tf.where(attn_mask[:, None, None, :], scores, self.epsilon)
 
-        causal_mask = tf.linalg.band_part(
-            tf.ones((seq_len, seq_len), dtype=tf.bool), -1, 0
-        )
-        causal_mask = causal_mask[None, None, :, :]
-
-        scores = tf.where(causal_mask, scores, self.epsilon)
+        scores = tf.where(self.causal_mask[None, None, :, :], scores, self.epsilon)
 
         attn_weights = tf.nn.softmax(scores, axis=-1)
 
@@ -75,7 +74,7 @@ class MultiHeadAttention(tf.keras.layers.Layer):
 
         # (batch, n_heads, seq_len, d_head) -> (batch, seq_len, n_heads, d_head)
         context = tf.transpose(context, perm=[0, 2, 1, 3])
-        context = tf.reshape(context, (batch, seq_len, self.d_model))
+        context = tf.reshape(context, (batch, self.seq_len, self.d_model))
 
         # Output projection
         d_out = self.output_proj(context)
@@ -113,11 +112,11 @@ class GPT2Transformer(tf.keras.layers.Layer):
     each with layer normalization and residual connections.
     """
     def __init__(
-            self, d_model, n_heads, dropout_rate=None, name=None, **kwargs):
+            self, seq_len, d_model, n_heads, dropout_rate=None, name=None, **kwargs):
         super().__init__(name=name, **kwargs)
 
         self.layer_norm_1 = tf.keras.layers.LayerNormalization(epsilon=1e-5, name='ln_1')
-        self.attn_heads = MultiHeadAttention(d_model, n_heads, name='attn_heads')
+        self.attn_heads = MultiHeadAttention(seq_len, d_model, n_heads, name='attn_heads')
         self.dropout_1 = tf.keras.layers.Dropout(rate=dropout_rate, name='drop_1')
         self.layer_norm_2 = tf.keras.layers.LayerNormalization(epsilon=1e-5, name='ln_2')
         self.ffn = GPT2FeedForwardNetwork(d_model, name='ffn')
@@ -153,7 +152,7 @@ class GPT2Model(tf.keras.models.Model):
             The model configuration, a dictionary.
             Keys must include:
                 'vocab_size': vocabulary size
-                'max_seq_len': input sequence maximum length (context size)
+                'seq_len': input sequence length (context size)
                 'd_model': hidden state size (embeddings size)
                 'n_layers': number of transformer blocks
                 'n_heads': number of attention heads
@@ -184,19 +183,21 @@ class GPT2Model(tf.keras.models.Model):
         self.dropout_rate = dropout_rate
 
         # Get model config parameters
-        vocab_size, max_seq_len, d_model, n_layers, n_heads = (
-            model_config[k] for k in ('vocab_size', 'max_seq_len', 'd_model', 'n_layers', 'n_heads')
+        vocab_size, seq_len, d_model, n_layers, n_heads = (
+            model_config[k] for k in ('vocab_size', 'seq_len', 'd_model', 'n_layers', 'n_heads')
         )
+        self.seq_len = seq_len
 
         # Token and position embedding layers
         self.token_embed_layer = tf.keras.layers.Embedding(vocab_size, d_model, name='tkn_emb')
-        self.position_embed_layer = tf.keras.layers.Embedding(max_seq_len, d_model, name='pos_emb')
+        self.position_embed_layer = tf.keras.layers.Embedding(seq_len, d_model, name='pos_emb')
 
         self.dropout = tf.keras.layers.Dropout(rate=dropout_rate)
 
         # Transformer layers
         self.transformer_layers = [
             GPT2Transformer(
+                seq_len,
                 d_model,
                 n_heads,
                 dropout_rate=dropout_rate,
@@ -216,8 +217,7 @@ class GPT2Model(tf.keras.models.Model):
         token_embed = self.token_embed_layer(inputs)
 
         # Position embeddings
-        seq_length = tf.shape(inputs)[1]
-        position_ids = tf.range(seq_length)
+        position_ids = tf.range(self.seq_len)
         position_embed = self.position_embed_layer(position_ids)
 
         # Embeddings
