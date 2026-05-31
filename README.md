@@ -47,11 +47,7 @@ The files for this project are in the */src* directory as shown below.
     └── model_vars.txt             # Output of script compare_vars.py for the smallest model size
 ```
 
-The Python packages I used are listed in file *requirements.txt*, which can be used to install them with *pip* as follows:
-
-```
-pip install -r requirements.txt
-```
+The Python packages I used are listed in file *requirements.txt*. TensorFlow 2.14.1 or older is required to run the code.
 
 To get started, you can run script *test.py* in the */src* directory. It instantiates a GPT-2 model and generates text from a prompt. You can try your own prompt and play with the next-token selection parameters to generate more conservative or creative text.
 
