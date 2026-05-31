@@ -25,6 +25,8 @@ The goal of this project was to construct the model using only these three found
 
 My ultimate goal was to be able to load into my model the GPT-2 pretrained weights released by OpenAI, and to verify that it generates sensible text from example prompts.
 
+As there are already many PyTorch models around, I decided to write mine in TensorFlow.
+
 ## 2. Source code and Python packages
 
 The files for this project are in the */src* directory as shown below.
@@ -316,8 +318,12 @@ The table below shows a few examples of model outputs obtained with the followin
 
 ## 13. Conclusion
 
-This concludes my GPT-2 model creation project from foundational research papers.
+The Transformer, GPT and GPT-2 papers proved sufficient to recreate the original GPT-2 model. No important detail was missing.
 
-In my next project, I fine-tuned the model to follow instructions, classify sentiments, and determine whether the truth of one text implies the truth of another one (entailment).
+The only significant issue I encountered was that the number of parameters I obtained for each model size did not match the numbers from the GPT-2 paper. As it turns out, my numbers are accurate and have largely become the community standard.
 
-See GitHub repo [GPT-2 model-tuning project](https://github.com/GuyDupenloup/gpt2_model_tuning?tab=readme-ov-file).
+Ultimately, I was able to load OpenAI's pretrained weights into my model and generate meaningful text with it. The proof is in the pudding!
+
+In my next project, I fine-tuned the model to perform multiple tasks: answering questions, simplifying texts, and classifying news. I made various enhancements to the model, in particular the addition of LoRA adapters to the attention heads. I first experimented with sequential training of the same model on several datasets, demonstrating examples of catastrophic forgetting. Then, I trained three LoRA adapters, each on a different task, and obtained quite impressive results.
+
+See GitHub repo [model_tuning_with_lora](https://github.com/GuyDupenloup/model_tuning_with_lora?tab=readme-ov-file).
