@@ -146,35 +146,24 @@ class GPT2Transformer(tf.keras.layers.Layer):
 
 class GPT2Model(tf.keras.models.Model):
     """
-    Model instantiation arguments:
-    -----------------------------
+    Original OpenAI GPT-2 model.
+
+    Arguments:
         model_config:
-            The model configuration, a dictionary.
-            Keys must include:
-                'vocab_size': vocabulary size
-                'seq_len': input sequence length (context size)
-                'd_model': hidden state size (embeddings size)
-                'n_layers': number of transformer blocks
-                'n_heads': number of attention heads
+            The model configuration parameters, a dictionary 
+            with the following items:
+                "vocab_size": vocabulary size.
+                "max_seq_len": input sequence maximum length (context size).
+                "d_model": hidden state size (embeddings size).
+                "n_layers": number of transformer blocks.
+                "n_heads": number of attention heads.
+            These parameters for a given model size can be obtained using
+            the get_gpt2_model_config() function in model_utils.py.
 
         dropout_rate:
-            Dropout rate for dropout layers.
-            Applied after embeddings and after each transformer sub-layer.
-            Optional, defaults to 0.
-
-    Model call() method:
-    -------------------
-        Arguments:
-            inputs:
-                Input token IDs.
-                A tf.Tensor with shape (batch_size, seq_len) and data type tf.int32
-            attention_mask:
-                Attention mask (0: ignore token, 1: consider token)
-                A tf.Tensor with shape (batch_size, seq_len) and data type tf.int32
-        Returns:
-            Hidden state logits over vocabulary
-            A tf.Tensor of with shape (batch_size, seq_len, vocab_size) and data_type tf.float32
+            The dropout rate for all the dropout layers of the model, a float >= 0.
     """
+
 
     def __init__(self, model_config, dropout_rate=0., name=None, **kwargs):
         super().__init__(name=name, **kwargs)
@@ -208,9 +197,25 @@ class GPT2Model(tf.keras.models.Model):
 
         self.layer_norm_final = tf.keras.layers.LayerNormalization(epsilon=1e-5, name='lnorm_f')
 
+
     def call(self, inputs, attention_mask, training=None):
         """
         Forward pass through the GPT-2 model.
+
+        Arguments:
+            inputs:
+                Input token sequences.
+                A tensor with shape (batch, seq_len).
+
+            attention_mask:
+                Mask specifying which token positions to attend to.
+                A tensor with shape (batch, seq_len).
+
+            training:
+                Training or evaluation mode.
+
+        Returns:
+            The hidden state output, a tensor with shape (batch, seq_len, d_model).
         """
 
         # Token embeddings
@@ -234,6 +239,12 @@ class GPT2Model(tf.keras.models.Model):
 
 
 class GPT2LanguageModel(tf.keras.models.Model):
+    """
+    GPT-2 language modelling head.
+
+    See docstring of GPT2Model.
+    """
+
     def __init__(self, model_config, dropout_rate=0., name=None, **kwargs):
         super().__init__(name=name, **kwargs)
 
@@ -243,8 +254,11 @@ class GPT2LanguageModel(tf.keras.models.Model):
 
     def call(self, inputs, training=None):
         """
-        Forward pass through language model.
+        Forward pass through the GPT-2 language model.
+
+        See docstring of GPT2Model.call().
         """
+        
         input_ids = inputs['input_ids']       # Input sequence token IDs
         attention_mask = inputs['attention_mask']
 

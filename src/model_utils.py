@@ -4,7 +4,7 @@
 from tabulate import tabulate
 import numpy as np
 import tensorflow as tf
-from gpt2_model import GPT2LanguageModel
+from gpt2_language_model import GPT2LanguageModel
 from transformers import TFGPT2LMHeadModel
 
 
