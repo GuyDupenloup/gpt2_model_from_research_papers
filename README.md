@@ -298,11 +298,14 @@ I implemented four methods to select the next token when generating text from a 
 
 A script called *test_prompt.py* is available that creates a model and gets its response to a prompt. You can try your own prompts, and play with the next-token sampling parameters to get more conservative or "creative" answers.
 
-The table below shows a few examples of responses of a 124M model to the prompt "The secret to living a happy life is ". The first row in the table is the model's response when OpenAI's pretrained weights are not loaded. As expected, it is gibberish. The following rows show answers obtained using different sampling parameters. They are all in correct English with well formed sentences. Some of them make sense, some others are quite hilarious.
+A first experiment was to test the response of a 124M model to the prompt "The secret to living a happy life is " without loading OpenAIs pretrained weights. As expected, the model generates gibberish:
+
+    The secret to living a happy life isBeer覚醒18 reson modemofi demonstrated disag 46 Gamb domain spoon reappCentral435 presentsforth nodes Additionallynsizzlenuclearreading?!" simplified EPSDynamic filmmakers Mist Brune king CBO extension PricingBytes DNua simplifiedjection backersacists alternateMTreeesthesiatariansdifferent invalid flagship farmer
+
+The table below shows a few examples of responses to the same prompt, with the pretrained weights loaded, using different sampling methods. They are all in correct English with well formed sentences. Some of them make sense, some others are quite hilarious.
 
 |  Next-token sampling method   |     Model output (50 tokens)         |
 |-------------------------|--------------------------------------------|
-|  No pretrained weights | The secret to living a happy life isBeer覚醒18 reson modemofi demonstrated disag 46 Gamb domain spoon reappCentral435 presentsforth nodes Additionallynsizzlenuclearreading?!" simplified EPSDynamic filmmakers Mist Brune king CBO extension PricingBytes DNua simplifiedjection backersacists alternateMTreeesthesiatariansdifferent invalid flagship farmer |
 |  greedy                 |  The secret to living a happy life is to be able to live with your family and friends. The best way to live a happy life is to be able to live with your family and friends. The best way to live a happy life is to be able to live with  |
 |  temperature=0.8        | The secret to living a happy life is to be able to look back on your childhood, and see how things've changed in your life, and how things have changed over time. I have no doubt, using my stories as a base for my own personal development, my own journey, these  |
 |  temperature=1.5        |  The secret to living a happy life is to have a strong, strong spirit," said the pope. In a speech delivered on the occasion of the 70th anniversary of the birth of Jesus, Joseph Stalin said the goal is for mankind to live in a very different world because we would  |
