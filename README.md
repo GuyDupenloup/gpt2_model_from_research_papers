@@ -298,7 +298,7 @@ I implemented four methods to select the next token when generating text from a 
 
 A script called *test_prompt.py* is available that creates a model and gets its response to a prompt. You can try your own prompts, and play with the next-token sampling parameters to get more conservative or "creative" answers.
 
-A first experiment was to test the response of a 124M model to the prompt "The secret to living a happy life is " without loading OpenAIs pretrained weights. As expected, the model generates gibberish:
+A first experiment was to test the response of a 124M model to the prompt "The secret to living a happy life is " without loading OpenAI's pretrained weights. As expected, the model generates gibberish:
 
     The secret to living a happy life isBeer覚醒18 reson modemofi demonstrated disag 46 Gamb 
     domain spoon reappCentral435 presentsforth nodes Additionallynsizzlenuclearreading?!" simplified 
