@@ -165,7 +165,7 @@ class GPT2Model(tf.keras.models.Model):
     """
 
 
-    def __init__(self, model_config, dropout_rate=0., name=None, **kwargs):
+    def __init__(self, model_config, dropout_rate=None, name=None, **kwargs):
         super().__init__(name=name, **kwargs)
         
         self.config = model_config
@@ -245,7 +245,7 @@ class GPT2LanguageModel(tf.keras.models.Model):
     See docstring of GPT2Model.
     """
 
-    def __init__(self, model_config, dropout_rate=0., name=None, **kwargs):
+    def __init__(self, model_config, dropout_rate=0.1, name=None, **kwargs):
         super().__init__(name=name, **kwargs)
 
         self.config = model_config

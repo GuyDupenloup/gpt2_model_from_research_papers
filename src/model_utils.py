@@ -44,7 +44,7 @@ def get_pretrained_variables(model_size):
     return model.trainable_variables
 
 
-def create_gpt2_language_model(model_size, dropout_rate=0., name='gpt2_lm'):
+def create_gpt2_language_model(model_size, dropout_rate=0.1, name='gpt2_lm'):
     """
     Creates a GPT-2 language model (base GPT-2 model with a language modelling output layer).
     OpenAI's pretrained weights are loaded in the model.
