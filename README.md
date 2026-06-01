@@ -300,7 +300,9 @@ A script called *test_prompt.py* is available that creates a model and gets its 
 
 A first experiment was to test the response of a 124M model to the prompt "The secret to living a happy life is " without loading OpenAIs pretrained weights. As expected, the model generates gibberish:
 
-    The secret to living a happy life isBeer覚醒18 reson modemofi demonstrated disag 46 Gamb domain spoon reappCentral435 presentsforth nodes Additionallynsizzlenuclearreading?!" simplified EPSDynamic filmmakers Mist Brune king CBO extension PricingBytes DNua simplifiedjection backersacists alternateMTreeesthesiatariansdifferent invalid flagship farmer
+    The secret to living a happy life isBeer覚醒18 reson modemofi demonstrated disag 46 Gamb 
+    domain spoon reappCentral435 presentsforth nodes Additionallynsizzlenuclearreading?!" simplified 
+    EPSDynamic filmmakers Mist Brune king CBO extension PricingBytes DNua simplifiedjection backersacists alternateMTreeesthesiatariansdifferent invalid flagship farmer
 
 The table below shows a few examples of responses to the same prompt, with the pretrained weights loaded, using different sampling methods. They are all in correct English with well formed sentences. Some of them make sense, some others are quite hilarious.
 
