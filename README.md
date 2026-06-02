@@ -40,7 +40,7 @@ The files for this project are in the */src* directory as shown below.
     |
     ├── gen_text.py                # Generate a text from a prompt
     |
-    ├── test.py                    # Create a model and generate a text from a specified prompt
+    ├── test_prompt.py             # Create a model and generate a text from a prompt
     |
     ├── compare_vars.py            # Compare trainable variables to Hugging Face models
     |
@@ -49,7 +49,7 @@ The files for this project are in the */src* directory as shown below.
 
 The Python packages I used are listed in file *requirements.txt*. TensorFlow 2.14.1 or older is required to run the code.
 
-To get started, you can run script *test.py* in the */src* directory. It instantiates a GPT-2 model and generates text from a prompt. You can try your own prompt and play with the next-token selection parameters to generate more conservative or creative text.
+To get started, you can run script *test_prompts.py* in the */src* directory. It instantiates a GPT-2 model and generates text from a prompt. You can try your own prompt and play with the next-token selection parameters to generate more conservative or creative text.
 
 ## 3. Methodology
 
@@ -305,7 +305,8 @@ A first experiment was to test the response of a 124M model to the prompt "The s
     EPSDynamic filmmakers Mist Brune king CBO extension PricingBytes DNua simplifiedjection backersacists
     alternateMTreeesthesiatariansdifferent invalid flagship farmer
 
-The table below shows a few examples of responses to the same prompt, with the pretrained weights loaded, using different sampling methods. They are all in correct English with well formed sentences. Some of them make sense, some others are quite hilarious.
+The table below shows a few examples of responses from a 124M model to the same prompt, with the pretrained weights loaded, using different sampling methods. They are all in correct English with well formed sentences. Some of them make sense, some others are quite hilarious. Better responses could obviously be obtained with a larger model.
+
 
 |  Next-token sampling method   |     Model output (50 tokens)         |
 |-------------------------|--------------------------------------------|

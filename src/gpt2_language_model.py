@@ -22,10 +22,10 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         self.epsilon = tf.constant(-1e9, dtype=tf.float32)
 
         # Concatenated Wq, Wk and Wv matrices
-        self.W_qkv = tf.keras.layers.Dense(3 * d_model, name='W_qkv')
+        self.W_qkv = tf.keras.layers.Dense(3 * d_model, name="W_qkv")
 
         # Output projection matrix
-        self.output_proj = tf.keras.layers.Dense(d_model, name='out_proj')
+        self.output_proj = tf.keras.layers.Dense(d_model, name="out_proj")
 
         self.causal_mask = tf.linalg.band_part(
             tf.ones((self.seq_len, self.seq_len), dtype=tf.bool), -1, 0
@@ -95,9 +95,9 @@ class GPT2FeedForwardNetwork(tf.keras.layers.Layer):
         self.ff_inner = tf.keras.layers.Dense(
             4 * d_model,
             activation=tf.keras.activations.gelu,
-            name='ffn_inner',
+            name="ffn_inner",
         )
-        self.ff_out = tf.keras.layers.Dense(d_model, name='ffn_out')
+        self.ff_out = tf.keras.layers.Dense(d_model, name="ffn_out")
 
     def call(self, inputs, training=None):
         x = self.ff_inner(inputs)
@@ -115,12 +115,12 @@ class GPT2Transformer(tf.keras.layers.Layer):
             self, seq_len, d_model, n_heads, dropout_rate=None, name=None, **kwargs):
         super().__init__(name=name, **kwargs)
 
-        self.layer_norm_1 = tf.keras.layers.LayerNormalization(epsilon=1e-5, name='ln_1')
-        self.attn_heads = MultiHeadAttention(seq_len, d_model, n_heads, name='attn_heads')
-        self.dropout_1 = tf.keras.layers.Dropout(rate=dropout_rate, name='drop_1')
-        self.layer_norm_2 = tf.keras.layers.LayerNormalization(epsilon=1e-5, name='ln_2')
-        self.ffn = GPT2FeedForwardNetwork(d_model, name='ffn')
-        self.dropout_2 = tf.keras.layers.Dropout(rate=dropout_rate, name='drop_2')
+        self.layer_norm_1 = tf.keras.layers.LayerNormalization(epsilon=1e-5, name="ln_1")
+        self.attn_heads = MultiHeadAttention(seq_len, d_model, n_heads, name="attn_heads")
+        self.dropout_1 = tf.keras.layers.Dropout(rate=dropout_rate, name="drop_1")
+        self.layer_norm_2 = tf.keras.layers.LayerNormalization(epsilon=1e-5, name="ln_2")
+        self.ffn = GPT2FeedForwardNetwork(d_model, name="ffn")
+        self.dropout_2 = tf.keras.layers.Dropout(rate=dropout_rate, name="drop_2")
 
 
     def call(self, inputs, attention_mask, training=None):
@@ -173,13 +173,13 @@ class GPT2Model(tf.keras.models.Model):
 
         # Get model config parameters
         vocab_size, seq_len, d_model, n_layers, n_heads = (
-            model_config[k] for k in ('vocab_size', 'seq_len', 'd_model', 'n_layers', 'n_heads')
+            model_config[k] for k in ("vocab_size", "seq_len", "d_model", "n_layers", "n_heads")
         )
         self.seq_len = seq_len
 
         # Token and position embedding layers
-        self.token_embed_layer = tf.keras.layers.Embedding(vocab_size, d_model, name='tkn_emb')
-        self.position_embed_layer = tf.keras.layers.Embedding(seq_len, d_model, name='pos_emb')
+        self.token_embed_layer = tf.keras.layers.Embedding(vocab_size, d_model, name="tkn_emb")
+        self.position_embed_layer = tf.keras.layers.Embedding(seq_len, d_model, name="pos_emb")
 
         self.dropout = tf.keras.layers.Dropout(rate=dropout_rate)
 
@@ -190,12 +190,12 @@ class GPT2Model(tf.keras.models.Model):
                 d_model,
                 n_heads,
                 dropout_rate=dropout_rate,
-                name=f'transformer_{i}'
+                name=f"transformer_{i}"
             ) 
             for i in range(n_layers)
         ]
 
-        self.layer_norm_final = tf.keras.layers.LayerNormalization(epsilon=1e-5, name='lnorm_f')
+        self.layer_norm_final = tf.keras.layers.LayerNormalization(epsilon=1e-5, name="lnorm_f")
 
 
     def call(self, inputs, attention_mask, training=None):
@@ -249,7 +249,7 @@ class GPT2LanguageModel(tf.keras.models.Model):
         super().__init__(name=name, **kwargs)
 
         self.config = model_config
-        self.gpt2_model = GPT2Model(model_config, dropout_rate=dropout_rate, name='gpt2_model')
+        self.gpt2_model = GPT2Model(model_config, dropout_rate=dropout_rate, name="gpt2_model")
 
 
     def call(self, inputs, training=None):
@@ -259,8 +259,8 @@ class GPT2LanguageModel(tf.keras.models.Model):
         See docstring of GPT2Model.call().
         """
         
-        input_ids = inputs['input_ids']       # Input sequence token IDs
-        attention_mask = inputs['attention_mask']
+        input_ids = inputs["input_ids"]       # Input sequence token IDs
+        attention_mask = inputs["attention_mask"]
 
         gpt2_output = self.gpt2_model(input_ids, attention_mask, training=training)
 
