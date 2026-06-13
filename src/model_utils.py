@@ -10,32 +10,32 @@ from transformers import TFGPT2LMHeadModel
 
 def get_gpt2_model_config(model_size):
     """
-    Gets model configuration parameters for each of OpenAI's model sizes.
+    Gets model configuration parameters for each of OpenAI"s model sizes.
     """
     model_configs = {
-         '124M': {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 768,  'n_layers': 12, 'n_heads': 12},
-         '355M': {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1024, 'n_layers': 24, 'n_heads': 16},
-         '774M': {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1280, 'n_layers': 36, 'n_heads': 20},
-        '1.56B': {'vocab_size': 50257,  'seq_len': 1024, 'd_model': 1600, 'n_layers': 48, 'n_heads': 25}
+         "124M": {"vocab_size": 50257,  "seq_len": 1024, "d_model": 768,  "n_layers": 12, "n_heads": 12},
+         "355M": {"vocab_size": 50257,  "seq_len": 1024, "d_model": 1024, "n_layers": 24, "n_heads": 16},
+         "774M": {"vocab_size": 50257,  "seq_len": 1024, "d_model": 1280, "n_layers": 36, "n_heads": 20},
+        "1.56B": {"vocab_size": 50257,  "seq_len": 1024, "d_model": 1600, "n_layers": 48, "n_heads": 25}
     }
 
     supported_sizes = list(model_configs.keys())
     if model_size not in supported_sizes:
-        raise ValueError(f"Supported model sizes are {supported_sizes}. Received '{model_size}'")
+        raise ValueError(f"Supported model sizes are {supported_sizes}. Received `{model_size}`")
 
     config = model_configs[model_size]
-    config['size'] = model_size
+    config["size"] = model_size
 
     return config
 
 
 def get_pretrained_variables(model_size):
     """
-    Creates a Hugging Face pretrained model of a specified size (one of OpenAi's four sizes).
+    Creates a Hugging Face pretrained model of a specified size (one of OpenAi"s four sizes).
     Returns the trainable variables of the model.
     """
 
-    mapping = {'124M': 'gpt2', '355M': 'gpt2-medium', '774M': 'gpt2-large', '1542M': 'gpt2-xl'}
+    mapping = {"124M": "gpt2", "355M": "gpt2-medium", "774M": "gpt2-large", "1542M": "gpt2-xl"}
     assert model_size in mapping
     hf_name = mapping[model_size]
 
@@ -44,14 +44,14 @@ def get_pretrained_variables(model_size):
     return model.trainable_variables
 
 
-def create_gpt2_language_model(model_size, dropout_rate=0.1, name='gpt2_lm'):
+def create_gpt2_language_model(model_size, dropout_rate=0.1, name="gpt2_lm"):
     """
     Creates a GPT-2 language model (base GPT-2 model with a language modelling output layer).
-    OpenAI's pretrained weights are loaded in the model.
+    OpenAI"s pretrained weights are loaded in the model.
 
     Arguments:
         model_size:
-            '124M', '355M', '774M', or '1542M'.
+            "124M", "355M", "774M", or "1542M".
         dropout_rate:
             Dropout rate for dropout layers.
             Applied after embeddings and after each transformer sub-layer.
@@ -70,16 +70,16 @@ def create_gpt2_language_model(model_size, dropout_rate=0.1, name='gpt2_lm'):
     )
 
     # Build the model using dummy inputs
-    seq_len = model_config['seq_len']
-    vocab_size = model_config['vocab_size']
+    seq_len = model_config["seq_len"]
+    vocab_size = model_config["vocab_size"]
     dummy_input = {
-        'input_ids': tf.random.uniform((1, seq_len), minval=0, maxval=vocab_size, dtype=tf.int32),
-        'attention_mask': tf.random.uniform((1, seq_len), minval=0, maxval=2, dtype=tf.int32)
+        "input_ids": tf.random.uniform((1, seq_len), minval=0, maxval=vocab_size, dtype=tf.int32),
+        "attention_mask": tf.random.uniform((1, seq_len), minval=0, maxval=2, dtype=tf.int32)
     }
     _ = model(dummy_input)
 
 	# Load Hugging Face model of the same size 
-    # get it's trainable variables
+    # get it"s trainable variables
     pretrained_vars = get_pretrained_variables(model_size)
     num_pretrained_vars = len(pretrained_vars)
 
@@ -103,33 +103,39 @@ def create_gpt2_language_model(model_size, dropout_rate=0.1, name='gpt2_lm'):
     return model
 
 
-def print_model_variables(model, trainable=True, non_trainable=False):
+def print_model_variables(model, verbose=False):
     """
-    Prints the trainable/non-trainable variables of a model
-    (names, shapes, number of parameters)
+    Prints each variable of a model with its name and weights shapes.
+
+    If `verbose` is False, only the numbers of trainable and non-trainable
+    parameters are printed.
     """
 
     def print_vars(model_size, var_list, var_type):
-        print('\n' + '=' * 80)
-        print(f"  {var_type} variables of model `{model_size}`")
-        print('=' * 80 + '\n')
+        if verbose:
+            print("\n" + "=" * 80)
+            print(f"  {var_type} variables of model `{model_size}`")
+            print("=" * 80 + "\n")
 
         total_params = 0
         if len(var_list) > 0:
             data = []
             total_params = 0
             for var in var_list:
+                var_name = var.path if hasattr(var, "path") else var.name
                 num_params = int(np.prod(var.shape))
                 total_params += num_params
-                data.append([f'{var.name}', f'{var.shape}', f'{num_params:,.0f}'])
+                data.append([f"{var_name}", f"{var.shape}", f"{num_params:,.0f}"])
 
-            headers = ['Variable', 'Shape', '#Params']
-            print(tabulate(data, headers=headers, tablefmt='pipe', colalign=('left', 'center', 'right')))
-        print(f'\nTotal {var_type} parameters: {total_params:,.0f}')
+            if verbose:
+                headers = ["Variable", "Shape", "#Params"]
+                print(tabulate(data, headers=headers, tablefmt="pipe", colalign=("left", "center", "right")))
 
-    model_size = model.config['size']
-    if trainable:
-        print_vars(model_size, model.trainable_variables, 'Trainable')
+        return total_params
 
-    if non_trainable:
-        print_vars(model_size, model.non_trainable_variables, 'Non-trainable')
+    model_size = model.model_config["size"]
+    num_params = print_vars(model_size, model.trainable_variables, "Trainable")
+    print(f"Trainable parameters: {num_params:,}")
+
+    num_params = print_vars(model_size, model.non_trainable_variables, "Non-trainable")
+    print(f"Non-trainable parameters: {num_params:,}")

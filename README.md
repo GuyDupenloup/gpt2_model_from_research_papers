@@ -1,6 +1,9 @@
 
 # GPT-2 Model in TensorFlow
 
+"What I cannot create, I do not understand."
+— **Richard Feynman**
+
 ## 1. Introduction
 
 This repo contains a TensorFlow implementation of OpenAI's GPT-2 model.
