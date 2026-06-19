@@ -49,7 +49,7 @@ The files for this project are in the */src* directory as shown below.
 
 The Python packages I used are listed in file *requirements.txt*. TensorFlow 2.14.1 or older is required to run the code.
 
-To get started, you can run script *test_prompt.py* in the */src* directory. It instantiates a GPT-2 model and generates text from a prompt. You can try your own prompt and play with the next-token selection parameters to generate more conservative or "creative" text.
+To see the model in action, run script *test_prompt.py* that instantiates a GPT-2 model and generates text from a prompt. You can choose a model size and try your own prompts, and also play with the next-token selection parameters to generate more conservative or "creative" texts.
 
 ## 3. Methodology
 
@@ -83,7 +83,7 @@ The model comprises an encoder and a decoder that are built with stacks of modul
 
 As shown in the figure, a layer contains multi-head attention blocks, a feed-forward network and layer normalizations.
 
-Diagrams of the attention head and multi-head attention block are also provided in the same paper:
+Diagrams of the attention head and multi-head attention block are also provided in the paper:
 
 ![](pictures/self_attention.JPG)
 
@@ -107,10 +107,11 @@ Because it is a decoder-only architecture, the GPT model requires only 2 sub-lay
 
 ### Embeddings
 
-In the "Model Specifications" section of the GPT paper:
+In the "Model Specifications" paragraph in section "4.1 Setup" of the GPT paper:
 
 ```
-    We used learned position embeddings instead of the sinusoidal version proposed in the original work.
+    We used learned position embeddings instead of the sinusoidal version proposed 
+    in the original work.
 ```
 
 The GPT-2 paper makes no mention of the type of embeddings they used to capture sequence information, so I assumed that it also uses position embeddings.
@@ -230,7 +231,7 @@ Also mentioned in the same section of the GPT paper:
     For the activation function, we used the Gaussian Error Linear Unit (GELU).
 ```
 
-The GELU yields smoother gradients than the ReLU. As it was not mentioned in the GPT-2 paper, I assumed that the GELU activation function was also used in the GPT-2 model.
+The GELU yields smoother gradients than the ReLU used in the Transformer model. As it was not mentioned in the GPT-2 paper, I assumed that the GELU activation function was also used in the GPT-2 model.
 
 
 ## 8. Output linear layer
@@ -246,7 +247,7 @@ The Transformer paper describes the model output linear layer in section "3.4: E
     linear transformation, similar to [30].
 ```
 
-The GPT paper describes the same linear layer in section "3.2 Supervised fine-tuning". The GPT-2 paper does not mention it, so I assumed that it is the same as in the Transformer and GPT papers.
+The GPT paper describes the same linear layer in section "3.2 Supervised fine-tuning". The GPT-2 paper makes no mention of it, so I assumed that it is the same as in the Transformer and GPT papers.
 
 The output linear layer projects the final decoder representations to the vocabulary size, followed by a softmax function to produce next-token probabilities. The weights of the projection matrix Wy are shared with the embedding matrix E, as mentioned in the paper. The input embedding layer maps tokens to embeddings while the output linear transformation maps embeddings back to tokens, so Wy is the transpose of E.
 
@@ -280,7 +281,7 @@ Running this function for all the model sizes in the GPT-2 paper gave the result
 | 762M          |   774,030,080 ~ 774M      |
 | 1542M         |  1,557,611,200 ~ 1558M    |
 
-My model sizes are different from the numbers given in the GPT-2 paper. I had to do some research as I could not find any explanation. It turns out that my numbers are accurate and the community standardized on them after the publication of the GPT-2 paper. To avoid any confusion, I did the same and used the names '124M', '355M', '774M' and '1558M' in my code.
+My model sizes are different from the numbers given in the GPT-2 paper. I had to do some research as I could not find any explanation. It turns out that my numbers are accurate and the community standardized on them after the publication of the GPT-2 paper. To avoid any confusion, I did the same and used the names 124M, 355M, 774M and 1558M in my code.
 
 ## 11. Loading OpenAI's pretrained weights
 
@@ -288,7 +289,7 @@ OpenAI's weights for GPT-2 models can be obtained from multiple sources. I used 
 
 Keras stores the list of trainable variables of a model in its *trainable_variables* attribute. Transferring the weights from a source model to a target model is trivial if their lists of trainable variables match one-to-one, which requires the two models to share the same organization in layers and sub-layers.
 
-File *model_vars.txt* contains a one-to-one comparison of the trainable variables of my '124M' model and the corresponding Hugging Face model. Although they have different names, all the variables align. Hugging Face obviously followed the model architecture specified in the research papers, just like I did.
+File *model_vars.txt* contains a one-to-one comparison of the trainable variables of my 124M model and the corresponding Hugging Face model, which is called "gpt2". Although they have different names, all the variables align. Hugging Face obviously followed the model architecture specified in the research papers, just like I did.
 
 Therefore, a simple loop through trainable variables was enough to transfer the Hugging Face weights to my model.
 
@@ -296,7 +297,7 @@ Therefore, a simple loop through trainable variables was enough to transfer the 
 
 I implemented four methods to select the next token when generating text from a prompt: greedy, temperature scaling, top-k sampling, and top-p (nucleus) sampling.
 
-A script called *test_prompt.py* is available that creates a model and gets its response to a prompt. You can try your own prompts, and play with the next-token sampling parameters to get more conservative or "creative" answers.
+The script *test_prompt.py* creates a model and gets its response to a prompt. You can try your own prompts, and play with the next-token sampling parameters to get more conservative or "creative" answers. Use the --help option of the script for usage details.
 
 A first experiment was to test the response of a 124M model to the prompt "The secret to living a happy life is " without loading OpenAI's pretrained weights. As expected, the model generates gibberish:
 
@@ -305,7 +306,7 @@ A first experiment was to test the response of a 124M model to the prompt "The s
     EPSDynamic filmmakers Mist Brune king CBO extension PricingBytes DNua simplifiedjection backersacists
     alternateMTreeesthesiatariansdifferent invalid flagship farmer
 
-The table below shows a few examples of responses from a 124M model to the same prompt, with the pretrained weights loaded, using different sampling methods. They are all in correct English with well formed sentences. Some of them make sense, some others are quite hilarious. Better responses could obviously be obtained with a larger model.
+The table below shows a few examples of responses from the 124M model to the same prompt, with the pretrained weights loaded, using different sampling methods. They are all in correct English with well formed sentences. Some of them make sense, some others are quite hilarious. A larger model would yield better answers, as 124M is the smallest size.
 
 
 |  Next-token sampling method   |     Model output (50 tokens)         |
@@ -322,8 +323,8 @@ The Transformer, GPT and GPT-2 papers proved sufficient to recreate the original
 
 The only significant issue I encountered was that the number of parameters I obtained for each model size did not match the numbers from the GPT-2 paper. As it turns out, my numbers are accurate and have largely become the community standard.
 
-Ultimately, I was able to load OpenAI's pretrained weights into my model and generate meaningful text with it. The proof is in the pudding!
+Ultimately, I was able to load OpenAI's pretrained weights into my model and generate sensible text with it. The proof is in the pudding!
 
-In my next project, I fine-tuned the model to perform multiple tasks: answering questions, simplifying texts, and classifying news. I made various enhancements to the model, in particular the addition of LoRA adapters to the attention heads. I first experimented with sequential training of the same model on several datasets, demonstrating examples of catastrophic forgetting. Then, I trained three LoRA adapters, each on a different task, and obtained quite impressive results.
+In my next project, I fine-tuned the model to perform multiple tasks: answering questions, simplifying texts, and classifying news. I made various enhancements to the model, in particular the addition of LoRA adapters to the attention heads. I first experimented with sequential training of the same model on several datasets, demonstrating examples of catastrophic forgetting. Then, I trained three LoRA adapters, each on a different task, and obtained some impressive results.
 
 See GitHub repo [model_tuning_with_lora](https://github.com/GuyDupenloup/model_tuning_with_lora?tab=readme-ov-file).
