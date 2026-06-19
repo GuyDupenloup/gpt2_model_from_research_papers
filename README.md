@@ -10,7 +10,7 @@ This repo contains a TensorFlow implementation of OpenAI's GPT-2 model.
 
 The goal of this project was to construct the model using only these three foundational research papers:
 
-- The original transformer paper published in 2017:
+- The original Transformer paper published in 2017:
 
    Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, Illia Polosukhin.
     ["Attention Is All You Need."](https://arxiv.org/abs/1706.03762)
@@ -28,8 +28,6 @@ The goal of this project was to construct the model using only these three found
 
 My ultimate goal was to be able to load into my model the GPT-2 pretrained weights released by OpenAI, and to verify that it generates sensible text from example prompts.
 
-As there are already many PyTorch models around, I decided to write mine in TensorFlow.
-
 ## 2. Source code and Python packages
 
 The files for this project are in the */src* directory as shown below.
@@ -37,22 +35,21 @@ The files for this project are in the */src* directory as shown below.
 ```
    src
     |     
-    ├── gpt2_model.py              # GPT-2 language model
+    ├── gpt2_language_model.py     # GPT-2 model with LM head
     |
-    ├── model_utils.py             # Utilities (create a model, print model variables, count parameters)
-    |
-    ├── gen_text.py                # Generate a text from a prompt
-    |
-    ├── test_prompt.py             # Create a model and generate a text from a prompt
+    ├── model_utils.py             # Create a model, print model variables, count parameters
     |
     ├── compare_vars.py            # Compare trainable variables to Hugging Face models
     |
-    └── model_vars.txt             # Output of script compare_vars.py for the smallest model size
+    ├── model_vars.txt             # Model variables versus Hugging Face variables
+	|
+	└── test_prompt.py             # Create a model and generate a text from a prompt
+
 ```
 
 The Python packages I used are listed in file *requirements.txt*. TensorFlow 2.14.1 or older is required to run the code.
 
-To get started, you can run script *test_prompts.py* in the */src* directory. It instantiates a GPT-2 model and generates text from a prompt. You can try your own prompt and play with the next-token selection parameters to generate more conservative or creative text.
+To get started, you can run script *test_prompt.py* in the */src* directory. It instantiates a GPT-2 model and generates text from a prompt. You can try your own prompt and play with the next-token selection parameters to generate more conservative or "creative" text.
 
 ## 3. Methodology
 
@@ -281,9 +278,9 @@ Running this function for all the model sizes in the GPT-2 paper gave the result
 | 117M          |   124,439,808 ~ 124M      |
 | 345M          |   354,823,168 ~ 355M      |
 | 762M          |   774,030,080 ~ 774M      |
-| 1542M         |  1,557,611,200 ~ 1.56B    |
+| 1542M         |  1,557,611,200 ~ 1558M    |
 
-My model sizes are different from the numbers given in the GPT-2 paper. I had to do some research as I could not find any explanation. It turns out that my numbers are accurate and the community standardized on them after the publication of the GPT-2 paper. To avoid any confusion, I did the same and used the names '124M', '355M', '774M' and '1.56B' in my code.
+My model sizes are different from the numbers given in the GPT-2 paper. I had to do some research as I could not find any explanation. It turns out that my numbers are accurate and the community standardized on them after the publication of the GPT-2 paper. To avoid any confusion, I did the same and used the names '124M', '355M', '774M' and '1558M' in my code.
 
 ## 11. Loading OpenAI's pretrained weights
 

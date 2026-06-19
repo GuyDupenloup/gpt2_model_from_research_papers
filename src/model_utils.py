@@ -16,7 +16,7 @@ def get_gpt2_model_config(model_size):
          "124M": {"vocab_size": 50257,  "seq_len": 1024, "d_model": 768,  "n_layers": 12, "n_heads": 12},
          "355M": {"vocab_size": 50257,  "seq_len": 1024, "d_model": 1024, "n_layers": 24, "n_heads": 16},
          "774M": {"vocab_size": 50257,  "seq_len": 1024, "d_model": 1280, "n_layers": 36, "n_heads": 20},
-        "1.56B": {"vocab_size": 50257,  "seq_len": 1024, "d_model": 1600, "n_layers": 48, "n_heads": 25}
+        "1558M": {"vocab_size": 50257,  "seq_len": 1024, "d_model": 1600, "n_layers": 48, "n_heads": 25}
     }
 
     supported_sizes = list(model_configs.keys())
@@ -35,7 +35,7 @@ def get_pretrained_variables(model_size):
     Returns the trainable variables of the model.
     """
 
-    mapping = {"124M": "gpt2", "355M": "gpt2-medium", "774M": "gpt2-large", "1542M": "gpt2-xl"}
+    mapping = {"124M": "gpt2", "355M": "gpt2-medium", "774M": "gpt2-large", "1558M": "gpt2-xl"}
     assert model_size in mapping
     hf_name = mapping[model_size]
 
