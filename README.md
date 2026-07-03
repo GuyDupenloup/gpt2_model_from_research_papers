@@ -301,18 +301,18 @@ The script *test_prompt.py* creates a model and gets its response to a prompt. Y
 
 Below are examples of responses from a 774M model to the prompt "The secret to living a happy life is ". The first one shows the gibberish the model generated when used without loading OpenAI's pretrained weights. Those that follow were obtained with different sampling parameter settings.
 
-### No pretrained weights ###
+__No pretrained weights__
 
 
 The secret to living a happy life isBeer覚醒18 reson modemofi demonstrated disag 46 Gamb  domain spoon reappCentral435presentsforth nodes Additionallynsizzlenuclearreading?!" simplifiedEPSDynamic filmmakers Mist Brune king CBO extension PricingBytes DNua simplifiedjection backersacistsalternateMTreeesthesiatariansdifferent invalid flagship farmer
 
 
-### greedy ###
+__greedy__
 
 
 The secret to living a happy life is to be happy with yourself.  If you are unhappy with yourself, you will be unhappy with everyone around you.  If you are unhappy with everyone around you, you will be unhappy with yourself.  If you are unhappy with  yourself, you will be unhappy with everyone around you.  If you are unhappy with yourself,  you will be unhappy with everyone around you.  If you are unhappy with yourself, you will be unhappy with everyone around you.
 
-### temperature=0.8, top_k=20 ###
+__temperature=0.8, top_k=20__
 
 
 The secret to living a happy life is to be aware of the things that are important to you. You can start by asking the questions below:
@@ -333,7 +333,7 @@ I don't know where to start?
 I want to be happy and
 
 
-### temperature=0.8, top_k=30 ###
+__temperature=0.8, top_k=30__
 
 
 The secret to living a happy life is ____________," and then another one that's not so secret, "I'm just not that good at ________." And then there's this one, "I'm better than you. I'm better than you. I'm better than you." All of this is just a huge waste of time.
@@ -345,13 +345,13 @@ Your browser does not support HTML5 video tag.Click here to view original GIF
 I'm going to say it now: I am better than you. And that
 
 
-### temperature=0.8, top_p=0.9 ###
+__temperature=0.8, top_p=0.9__
 
 
 The secret to living a happy life is not making it work.  If you make it work, then you're not really living a happy life.  There's a lot of value in that. I've even heard it said that happiness is  a virtue of solitude.  In other words, it's not the happiness that you have in a group, but the happiness you have in solitude.  Because of that, it's important to be truly alone.  I mean, you can never
 
 
-### temperature=0.8  top_p=0.9 ###
+__temperature=0.8  top_p=0.9__
 
 
 The secret to living a happy life is  to be honest with yourself and to accept what you can't control. You will never live your life perfect if you are afraid of change. If you are afraid of change, you will never live your life full of joy. If you are afraid of change, you will never live your life full of love.The internet has the power to change the world, and one of the most powerful minds on the planet is working on ways to bring it to fruition.
@@ -359,7 +359,7 @@ The secret to living a happy life is  to be honest with yourself and to accept w
 Tech billionaire Yuri Mil
 
 
-### temperature=1.2 ###
+__temperature=1.2__
 
 
 The secret to living a happy life is  having often repeatedly smaller scenes. If we are constantly coming up next to someone who runs or rides prematurely, with our intellect fading or being focused and angles twisting, losing inwardly is just pointlessly constraint on the ability to experience. Stage 1 usually reproduces the sense... Ergo. End into Stage 2 crystallizes the idea. Now comes researches really about how insights travel, both relative forward and backward, allowing insight freely hom  updating Monday to Friday hope not people would tell an excuse the tr
