@@ -351,7 +351,7 @@ __temperature=0.8, top_p=0.9__
 The secret to living a happy life is not making it work.  If you make it work, then you're not really living a happy life.  There's a lot of value in that. I've even heard it said that happiness is  a virtue of solitude.  In other words, it's not the happiness that you have in a group, but the happiness you have in solitude.  Because of that, it's important to be truly alone.  I mean, you can never
 
 
-__temperature=0.8  top_p=0.9__
+__temperature=0.8, top_p=0.9__
 
 
 The secret to living a happy life is  to be honest with yourself and to accept what you can't control. You will never live your life perfect if you are afraid of change. If you are afraid of change, you will never live your life full of joy. If you are afraid of change, you will never live your life full of love.The internet has the power to change the world, and one of the most powerful minds on the planet is working on ways to bring it to fruition.
