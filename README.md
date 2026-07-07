@@ -28,8 +28,6 @@ The goal of this project was to construct the model using only these three found
 
 My ultimate goal was to be able to load into my model the GPT-2 pretrained weights released by OpenAI, and to verify that it generates sensible text from example prompts.
 
-While excellent PyTorch implementations of the GPT-2 model already exist, in particular in Hugging Face's *transformers* package, high-quality, modern TensorFlow/Keras implementations are far less common. For that reason, I chose to implement my model in TensorFlow.
-
 ## 2. Source code and Python packages
 
 The files for this project are in the */src* directory as shown below.
